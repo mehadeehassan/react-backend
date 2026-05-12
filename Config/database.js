@@ -1,4 +1,6 @@
 const { Sequelize } = require("sequelize");
+
+//Database connection
 const database = new Sequelize("shops", "root", "", {
   host: "localhost",
   port: 3306,

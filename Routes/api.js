@@ -1,11 +1,22 @@
 const routes = require("express").Router();
 
-// all pages section
+//controller section
 const signUpController = require("../Controller/SignUpController");
-const DataValidation = require("../Validation/SignUpDataValidation");
+//validation section
+const SingUpValidation = require("../Validation/SignUpDataValidation");
+//validation section
 const validate = require("../Common/Validate");
 
 //  all routes section
-routes.post("/signup",  validate(DataValidation()),signUpController.signUp);
+
+//signup route
+routes.post("/signup", validate(SingUpValidation()), signUpController.signUp);
+
+//user update route
+routes.put(
+  "/users/:id",
+  validate(SingUpValidation()),
+  signUpController.userUpdate,
+);
 
 module.exports = routes;

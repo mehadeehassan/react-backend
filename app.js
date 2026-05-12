@@ -1,8 +1,11 @@
 const express = require("express");
+//routes section
 const routes = require("./Routes/api");
+//body parser section
 const bodyParser = require("body-parser");
+//database section
 const database = require("./Config/database");
-
+//database connection
 try {
   database.authenticate();
   console.log("Database connection successfully");
@@ -10,10 +13,12 @@ try {
   console.log("Database connection failed");
 }
 
-//Application Boot
+//Application BootUp
 const app = express();
 const port = 3000;
+//body parser section
 app.use(express.json());
+//routes section
 app.use(routes);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
