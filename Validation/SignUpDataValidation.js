@@ -1,11 +1,16 @@
 const { body } = require("express-validator");
 const SignUpDataValidation = () => {
   return [
-    body("name").trim().notEmpty().isString().isLength({ min: 2, max: 30 }),
+    body("name")
+      .trim()
+      .notEmpty()
+      .isString()
+      .isLength({ min: 4, max: 40 })
+      .withMessage("Name must be between 2 and 30 characters"),
     body("email")
       .normalizeEmail()
       .isEmail()
-      .isLength({ min: 6, max: 40 })
+      .isLength({ min: 10, max: 40 })
       .withMessage("Email is not valid"),
     body("password")
       .isStrongPassword()

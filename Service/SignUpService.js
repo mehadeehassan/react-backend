@@ -1,9 +1,28 @@
-const SignUpRepository = require("../Repository/SignUpRepository")
+const SignUpRepository = require("../Repository/SignUpRepository");
 
 const SignUpService = {
-    signUp: (req) => {
-        SignUpRepository.createSignUp();
+  signUp: async (req) => {
+    const email = req.body.email;
+    const existingUser = await SignUpRepository.checkUserIsExistByEmail(email);
+    if (existingUser) {
+      return {
+        statusCode: 423,
+        message: "Email already exist",
+      };
     }
-}
+    const isDataSaved = await SignUpRepository.createSignUp(req);
+    if (isDataSaved[0]) {
+      return {
+        statusCode: 200,
+        message: "User registered successfully",
+      };
+    }
 
-module.exports = SignUpService
+    return {
+      statusCode: 500,
+      message: "User registration failed",
+    };
+  },
+};
+
+module.exports = SignUpService;
