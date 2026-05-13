@@ -19,11 +19,25 @@ const signUpController = {
   //update user
   userUpdate: async (req, res) => {
     //update user data
-    const isDataSaved = await SignUpService.userUpdate(req);
-    return res.status(isDataSaved.statusCode).json({
+    const isDataUpdated = await SignUpService.userUpdate(req);
+    return res.status(isDataUpdated.statusCode).json({
       // return response
-      success: isDataSaved.statusCode == 200 ? true : false,
-      message: isDataSaved.message,
+      success: isDataUpdated.statusCode == 200 ? true : false,
+      message: isDataUpdated.message,
+      data: req.body,
+      metadata: {
+        timestamps: new Date(),
+      },
+    });
+  },
+
+  //delete user 
+  deleteUser: async (req, res) => {
+    const isDataDeleted = await SignUpService.deleteUser(req);
+    return res.status(isDataDeleted.statusCode).json({
+      // return response
+      success: isDataDeleted.statusCode == 200 ? true : false,
+      message: isDataDeleted.message,
       data: req.body,
       metadata: {
         timestamps: new Date(),

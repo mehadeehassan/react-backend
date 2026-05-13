@@ -40,6 +40,19 @@ const SignUpRepository = {
       return [];
     }
   },
+
+  //Delete user
+  deleteUser: async (id) => {
+    //console.log(id);
+    try {
+      return await database.query(
+        `DELETE FROM users WHERE id = ${id}`
+      );
+    } catch (error) {
+      console.log(error.message);
+      return [];
+    }
+  },
 };
 
 module.exports = SignUpRepository;

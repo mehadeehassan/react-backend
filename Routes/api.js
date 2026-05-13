@@ -13,10 +13,9 @@ const validate = require("../Common/Validate");
 routes.post("/signup", validate(SingUpValidation()), signUpController.signUp);
 
 //user update route
-routes.put(
-  "/users/:id",
-  validate(SingUpValidation()),
-  signUpController.userUpdate,
-);
+routes.put("/updateUser/:id", validate(SingUpValidation()),signUpController.userUpdate);
+
+//user delete route
+routes.delete("/deleteUser/:id", signUpController.deleteUser);
 
 module.exports = routes;

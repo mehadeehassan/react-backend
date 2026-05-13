@@ -1,13 +1,11 @@
 const SignUpRepository = require("../Repository/SignUpRepository");
 
-//service section
 const SignUpService = {
   //create user
   signUp: async (req) => {
     const email = req.body.email;
     //check email
     const existingUser = await SignUpRepository.checkUserIsExistByEmail(email);
-    //check email
     if (existingUser) {
       return {
         statusCode: 423,
@@ -32,9 +30,10 @@ const SignUpService = {
   //update user
   userUpdate: async (req) => {
     const { email, id } = req.body;
-
-    const emailInUse = await SignUpRepository.checkEmailForUpdate(email, id);
+    // console.log(email,id);
+    
     //check email
+    const emailInUse = await SignUpRepository.checkEmailForUpdate(email, id);
     if (emailInUse) {
       return {
         statusCode: 423,
@@ -42,8 +41,8 @@ const SignUpService = {
       };
     }
     //update user data
-    const isDataSaved = await SignUpRepository.editorUser(req);
-    if (isDataSaved[0]) {
+    const isDataUpdated = await SignUpRepository.editorUser(req);
+    if (isDataUpdated[0]) {
       return {
         statusCode: 200,
         message: "User updated successfully",
@@ -55,6 +54,22 @@ const SignUpService = {
       message: "User update failed",
     };
   },
-};
 
+  //delete user
+  deleteUser: async (req) => {
+    const id = req.body.id;
+    const isDataDeleted = await SignUpRepository.deleteUser(id);
+    if (isDataDeleted[0]) {
+      return {
+        statusCode: 200,
+        message: "User deleted successfully",
+      };
+    }
+    //user delete failed
+    return {
+      statusCode: 500,
+      message: "User delete failed",
+    };
+  },
+};
 module.exports = SignUpService;
