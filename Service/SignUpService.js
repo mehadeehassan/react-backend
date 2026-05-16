@@ -31,7 +31,7 @@ const SignUpService = {
   userUpdate: async (req) => {
     const { email, id } = req.body;
     // console.log(email,id);
-    
+
     //check email
     const emailInUse = await SignUpRepository.checkEmailForUpdate(email, id);
     if (emailInUse) {
@@ -69,6 +69,40 @@ const SignUpService = {
     return {
       statusCode: 500,
       message: "User delete failed",
+    };
+  },
+
+  //get user by id
+  getUserById: async (req) => {
+    const id = req.body.id;
+    const isDataById = await SignUpRepository.getUserById(id);
+    if (isDataById[0]) {
+      return {
+        statusCode: 200,
+        message: "User data retrieved successfully",
+      };
+    }
+    //user data failed
+    return {
+      statusCode: 404,
+      message: "User not found",
+    };
+  },
+
+  //get all user
+  getAllUser: async (req) => {
+    const isDataAllUser = await SignUpRepository.getAllUser();
+    if (isDataAllUser[0]) {
+      return {
+        statusCode: 200,
+        message: "All user data retrieved successfully",
+        data: isDataAllUser[0],
+      };
+    }
+    //user data failed
+    return {
+      statusCode: 404,
+      message: "No users found",
     };
   },
 };

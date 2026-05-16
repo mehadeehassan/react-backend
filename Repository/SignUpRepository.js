@@ -53,6 +53,30 @@ const SignUpRepository = {
       return [];
     }
   },
+
+  //get user by id
+  getUserById: async (id) => {
+    try {
+      return await database.query(
+        `SELECT * FROM users WHERE id = ${id}`
+      );
+    } catch (error) {
+      console.log(error.message);
+      return [];
+    }
+  },
+
+  //get all user
+  getAllUser: async () => {
+    try {
+      return await database.query(
+        `SELECT * FROM users`
+      );
+    } catch (error) {
+      console.log(error.message);
+      return [];
+    }
+  },
 };
 
 module.exports = SignUpRepository;

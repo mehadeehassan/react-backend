@@ -44,6 +44,34 @@ const signUpController = {
       },
     });
   },
+
+  //get user by id
+  getUserById: async (req, res) => {
+    const isDataById = await SignUpService.getUserById(req);
+    return res.status(isDataById.statusCode).json({
+      // return response
+      success: isDataById.statusCode == 200 ? true : false,
+      message: isDataById.message,
+      data: isDataById.data,
+      metadata: {
+        timestamps: new Date(),
+      },
+    });
+  },
+
+  //get all user
+  getAllUser: async (req, res) => {
+    const isDataAllUser = await SignUpService.getAllUser(req);
+    return res.status(isDataAllUser.statusCode).json({
+      // return response
+      success: isDataAllUser.statusCode == 200 ? true : false,
+      message: isDataAllUser.message,
+      data: isDataAllUser.data,
+      metadata: {
+        timestamps: new Date(),
+      },
+    });
+  },
 };
 
 module.exports = signUpController;

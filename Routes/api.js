@@ -7,8 +7,6 @@ const SingUpValidation = require("../Validation/SignUpDataValidation");
 //validation section
 const validate = require("../Common/Validate");
 
-//  all routes section
-
 //signup route
 routes.post("/signup", validate(SingUpValidation()), signUpController.signUp);
 
@@ -17,5 +15,11 @@ routes.put("/updateUser/:id", validate(SingUpValidation()),signUpController.user
 
 //user delete route
 routes.delete("/deleteUser/:id", signUpController.deleteUser);
+
+//get all user route
+routes.get("/getAllUser", signUpController.getAllUser);
+
+//get user by id route
+routes.get("/getUserById/:id", signUpController.getUserById);
 
 module.exports = routes;
