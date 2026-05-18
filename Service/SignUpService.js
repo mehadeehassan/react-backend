@@ -1,7 +1,7 @@
 const SignUpRepository = require("../Repository/SignUpRepository");
 
 const SignUpService = {
-  //create user
+  //user registration service
   signUp: async (req) => {
     const email = req.body.email;
     //check email
@@ -12,7 +12,7 @@ const SignUpService = {
         message: "Email already exist",
       };
     }
-    //create user
+    //create user data
     const isDataSaved = await SignUpRepository.createSignUp(req);
     if (isDataSaved[0]) {
       return {
@@ -27,7 +27,7 @@ const SignUpService = {
     };
   },
 
-  //update user
+  //update user by id
   userUpdate: async (req) => {
     const { email, id } = req.body;
     // console.log(email,id);
@@ -41,7 +41,7 @@ const SignUpService = {
       };
     }
     //update user data
-    const isDataUpdated = await SignUpRepository.editorUser(req);
+    const isDataUpdated = await SignUpRepository.updateUser(req);
     if (isDataUpdated[0]) {
       return {
         statusCode: 200,
@@ -55,7 +55,7 @@ const SignUpService = {
     };
   },
 
-  //delete user
+  //delete user by id
   deleteUser: async (req) => {
     const id = req.body.id;
     const isDataDeleted = await SignUpRepository.deleteUser(id);
@@ -89,14 +89,14 @@ const SignUpService = {
     };
   },
 
-  //get all user
-  getAllUser: async (req) => {
-    const isDataAllUser = await SignUpRepository.getAllUser();
-    if (isDataAllUser[0]) {
+  //get all user limit
+  getAllUserLimit: async (req) => {
+    const isDataAllUserLimit = await SignUpRepository.getAllUserLimit();
+    if (isDataAllUserLimit[0]) {
       return {
         statusCode: 200,
         message: "All user data retrieved successfully",
-        data: isDataAllUser[0],
+        data: isDataAllUserLimit[0],
       };
     }
     //user data failed
@@ -105,5 +105,22 @@ const SignUpService = {
       message: "No users found",
     };
   },
+
+  // //get all user
+  // getAllUser: async (req) => {
+  //   const isDataAllUser = await SignUpRepository.getAllUser();
+  //   if (isDataAllUser[0]) {
+  //     return {
+  //       statusCode: 200,
+  //       message: "All user data retrieved successfully",
+  //       data: isDataAllUser[0],
+  //     };
+  //   }
+  //   //user data failed
+  //   return {
+  //     statusCode: 404,
+  //     message: "No users found",
+  //   };
+  // },
 };
 module.exports = SignUpService;

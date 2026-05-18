@@ -2,7 +2,7 @@ const SignUpService = require("../Service/SignUpService");
 
 //controller section
 const signUpController = {
-  //create user
+  //user registration controller
   signUp: async (req, res) => {
     const isDataSaved = await SignUpService.signUp(req);
     return res.status(isDataSaved.statusCode).json({
@@ -16,7 +16,7 @@ const signUpController = {
     });
   },
 
-  //update user
+  //update user by id
   userUpdate: async (req, res) => {
     //update user data
     const isDataUpdated = await SignUpService.userUpdate(req);
@@ -31,7 +31,7 @@ const signUpController = {
     });
   },
 
-  //delete user 
+  //delete user by id
   deleteUser: async (req, res) => {
     const isDataDeleted = await SignUpService.deleteUser(req);
     return res.status(isDataDeleted.statusCode).json({
@@ -59,19 +59,33 @@ const signUpController = {
     });
   },
 
-  //get all user
-  getAllUser: async (req, res) => {
-    const isDataAllUser = await SignUpService.getAllUser(req);
-    return res.status(isDataAllUser.statusCode).json({
+  //get all user limit
+  getAllUserLimit: async (req, res) => {
+    const isDataAllUserLimit = await SignUpService.getAllUserLimit(req);
+    return res.status(isDataAllUserLimit.statusCode).json({
       // return response
-      success: isDataAllUser.statusCode == 200 ? true : false,
-      message: isDataAllUser.message,
-      data: isDataAllUser.data,
+      success: isDataAllUserLimit.statusCode == 200 ? true : false,
+      message: isDataAllUserLimit.message,
+      data: isDataAllUserLimit.data,
       metadata: {
         timestamps: new Date(),
       },
     });
   },
+
+  // //get all user
+  // getAllUser: async (req, res) => {
+  //   const isDataAllUser = await SignUpService.getAllUser(req);
+  //   return res.status(isDataAllUser.statusCode).json({
+  //     // return response
+  //     success: isDataAllUser.statusCode == 200 ? true : false,
+  //     message: isDataAllUser.message,
+  //     data: isDataAllUser.data,
+  //     metadata: {
+  //       timestamps: new Date(),
+  //     },
+  //   });
+  // },
 };
 
 module.exports = signUpController;

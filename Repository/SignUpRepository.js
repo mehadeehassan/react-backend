@@ -17,7 +17,7 @@ const SignUpRepository = {
     return rows[0];
   },
 
-  //create user
+  //user registration
   createSignUp: async (req) => {
     try {
       return await database.query(
@@ -29,8 +29,8 @@ const SignUpRepository = {
     }
   },
 
-  //update user
-  editorUser: async (req) => {
+  //update user by id
+  updateUser: async (req) => {
     try {
       return await database.query(
         `UPDATE users SET name = '${req.body.name}', email = '${req.body.email}', password = '${req.body.password}' WHERE id = ${req.body.id}`,
@@ -41,13 +41,11 @@ const SignUpRepository = {
     }
   },
 
-  //Delete user
+  //Delete user by id
   deleteUser: async (id) => {
     //console.log(id);
     try {
-      return await database.query(
-        `DELETE FROM users WHERE id = ${id}`
-      );
+      return await database.query(`DELETE FROM users WHERE id = ${id}`);
     } catch (error) {
       console.log(error.message);
       return [];
@@ -57,26 +55,31 @@ const SignUpRepository = {
   //get user by id
   getUserById: async (id) => {
     try {
-      return await database.query(
-        `SELECT * FROM users WHERE id = ${id}`
-      );
+      return await database.query(`SELECT * FROM users WHERE id = ${id}`);
+    } catch (error) {
+      console.log(error.message);
+      return [];
+    }
+  },
+  //get all user limit
+  getAllUserLimit: async () => {
+    try {
+      return await database.query(`SELECT * FROM users LIMIT 20`);
     } catch (error) {
       console.log(error.message);
       return [];
     }
   },
 
-  //get all user
-  getAllUser: async () => {
-    try {
-      return await database.query(
-        `SELECT * FROM users`
-      );
-    } catch (error) {
-      console.log(error.message);
-      return [];
-    }
-  },
+  // //get all user
+  // getAllUser: async () => {
+  //   try {
+  //     return await database.query(`SELECT * FROM users`);
+  //   } catch (error) {
+  //     console.log(error.message);
+  //     return [];
+  //   }
+  // },
 };
 
 module.exports = SignUpRepository;
