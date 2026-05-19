@@ -5,6 +5,9 @@ const routes = require("./Routes/api");
 const bodyParser = require("body-parser");
 //database section
 const database = require("./Config/database");
+//cors section
+const cors = require("cors");
+
 //database connection
 try {
   database.authenticate();
@@ -18,6 +21,8 @@ const app = express();
 const port = 3000;
 //body parser section
 app.use(express.json());
+//cors section
+app.use(cors());
 //routes section
 app.use(routes);
 app.listen(port, () => {
