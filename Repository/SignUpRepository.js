@@ -70,16 +70,6 @@ const SignUpRepository = {
       return [];
     }
   },
-
-  // //get all user
-  // getAllUser: async () => {
-  //   try {
-  //     return await database.query(`SELECT * FROM users`);
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     return [];
-  //   }
-  // },
 };
 
 module.exports = SignUpRepository;

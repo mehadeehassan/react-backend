@@ -22,7 +22,4 @@ routes.get("/getUserById/:id", signUpController.getUserById);
 //get all user limit route
 routes.get("/getAllUserLimit", signUpController.getAllUserLimit);
 
-//get all user route 
-// routes.get("/getAllUser", signUpController.getAllUser);
-
 module.exports = routes;

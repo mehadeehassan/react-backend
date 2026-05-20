@@ -9,7 +9,8 @@ const signUpController = {
       // return response
       success: isDataSaved.statusCode == 200 ? true : false,
       message: isDataSaved.message,
-      data: req.body,
+      // errors থাকলে response এ errors field যোগ হবে, না থাকলে যোগ হবে না
+      ...(isDataSaved.errors && { errors: isDataSaved.errors }),
       metadata: {
         timestamps: new Date(),
       },
@@ -24,7 +25,7 @@ const signUpController = {
       // return response
       success: isDataUpdated.statusCode == 200 ? true : false,
       message: isDataUpdated.message,
-      data: req.body,
+      ...(isDataUpdated.errors && { errors: isDataUpdated.errors }),
       metadata: {
         timestamps: new Date(),
       },
@@ -38,7 +39,7 @@ const signUpController = {
       // return response
       success: isDataDeleted.statusCode == 200 ? true : false,
       message: isDataDeleted.message,
-      data: req.body,
+      ...(isDataDeleted.errors && { errors: isDataDeleted.errors }),
       metadata: {
         timestamps: new Date(),
       },
@@ -53,6 +54,7 @@ const signUpController = {
       success: isDataById.statusCode == 200 ? true : false,
       message: isDataById.message,
       data: isDataById.data,
+      ...(isDataById.errors && { errors: isDataById.errors }),
       metadata: {
         timestamps: new Date(),
       },
@@ -67,25 +69,12 @@ const signUpController = {
       success: isDataAllUserLimit.statusCode == 200 ? true : false,
       message: isDataAllUserLimit.message,
       data: isDataAllUserLimit.data,
+      ...(isDataAllUserLimit.errors && { errors: isDataAllUserLimit.errors }),
       metadata: {
         timestamps: new Date(),
       },
     });
   },
-
-  // //get all user
-  // getAllUser: async (req, res) => {
-  //   const isDataAllUser = await SignUpService.getAllUser(req);
-  //   return res.status(isDataAllUser.statusCode).json({
-  //     // return response
-  //     success: isDataAllUser.statusCode == 200 ? true : false,
-  //     message: isDataAllUser.message,
-  //     data: isDataAllUser.data,
-  //     metadata: {
-  //       timestamps: new Date(),
-  //     },
-  //   });
-  // },
 };
 
 module.exports = signUpController;

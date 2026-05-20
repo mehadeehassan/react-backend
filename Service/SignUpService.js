@@ -8,8 +8,14 @@ const SignUpService = {
     const existingUser = await SignUpRepository.checkUserIsExistByEmail(email);
     if (existingUser) {
       return {
-        statusCode: 423,
+        statusCode: 400,
         message: "Email already exist",
+        errors: [
+          {
+            field: "email",
+            message: "Email already exist",
+          },
+        ],
       };
     }
     //create user data
@@ -24,6 +30,12 @@ const SignUpService = {
     return {
       statusCode: 500,
       message: "User registration failed",
+      errors: [
+        {
+          field: "email",
+          message: "User registration failed",
+        },
+      ],
     };
   },
 
@@ -36,8 +48,14 @@ const SignUpService = {
     const emailInUse = await SignUpRepository.checkEmailForUpdate(email, id);
     if (emailInUse) {
       return {
-        statusCode: 423,
+        statusCode: 400,
         message: "Email already exist",
+        errors: [
+          {
+            field: "email",
+            message: "Email already exist",
+          },
+        ],
       };
     }
     //update user data
@@ -52,6 +70,12 @@ const SignUpService = {
     return {
       statusCode: 500,
       message: "User update failed",
+      errors: [
+        {
+          field: "email",
+          message: "User update failed",
+        },
+      ],
     };
   },
 
@@ -69,6 +93,12 @@ const SignUpService = {
     return {
       statusCode: 500,
       message: "User delete failed",
+      errors: [
+        {
+          field: "id",
+          message: "User delete failed",
+        },
+      ],
     };
   },
 
@@ -86,6 +116,12 @@ const SignUpService = {
     return {
       statusCode: 404,
       message: "User not found",
+      errors: [
+        {
+          field: "id",
+          message: "User not found",
+        },
+      ],
     };
   },
 
@@ -103,24 +139,13 @@ const SignUpService = {
     return {
       statusCode: 404,
       message: "No users found",
+      errors: [
+        {
+          field: "id",
+          message: "No users found",
+        },
+      ],
     };
   },
-
-  // //get all user
-  // getAllUser: async (req) => {
-  //   const isDataAllUser = await SignUpRepository.getAllUser();
-  //   if (isDataAllUser[0]) {
-  //     return {
-  //       statusCode: 200,
-  //       message: "All user data retrieved successfully",
-  //       data: isDataAllUser[0],
-  //     };
-  //   }
-  //   //user data failed
-  //   return {
-  //     statusCode: 404,
-  //     message: "No users found",
-  //   };
-  // },
 };
 module.exports = SignUpService;

@@ -1,33 +1,51 @@
 const { body } = require("express-validator");
-// signup data validation
+
 const SignUpDataValidation = () => {
   return [
     // name validation
     body("name")
-      .trim()
       .notEmpty()
-      .isString()
-      .isLength({ min: 4, max: 40 })
+      .withMessage("Name is required")
+      .bail()
+      .isLength({ min: 2, max: 30 })
       .withMessage("Name must be between 2 and 30 characters"),
 
     // email validation
     body("email")
-      .normalizeEmail()
+      .notEmpty()
+      .withMessage("Email is required")
+      .bail()
       .isEmail()
+      .withMessage("Email is not valid")
+      .bail()
       .isLength({ min: 10, max: 40 })
-      .withMessage("Email is not valid"),
+      .withMessage("Email must be between 10 and 40 characters")
+      .normalizeEmail(),
 
     // password validation
     body("password")
-      .isStrongPassword()
+      .notEmpty()
+      .withMessage("Password is required")
+      .bail()
       .isLength({ min: 6, max: 40 })
-      .withMessage("Password must be strong"),
-    body("confirmPassword").custom((value, { req }) => {
-      if (value !== req.body.password) {
-        throw new Error("Password confirmation does not match password");
-      }
-      return true;
-    }),
+      .withMessage("Password must be between 6 and 40 characters")
+      .bail()
+      .isStrongPassword()
+      .withMessage(
+        "Password must contain uppercase, lowercase, number and symbol",
+      ),
+
+    // confirmPassword validation
+    body("confirmPassword")
+      .notEmpty()
+      .withMessage("Confirm password is required")
+      .bail()
+      .custom((value, { req }) => {
+        if (value !== req.body.password) {
+          throw new Error("Password does not match");
+        }
+        return true;
+      }),
   ];
 };
 
