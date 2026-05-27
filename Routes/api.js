@@ -3,15 +3,15 @@ const routes = require("express").Router();
 //controller section
 const signUpController = require("../Controller/SignUpController");
 //validation section
-const SingUpValidation = require("../Validation/SignUpDataValidation");
+const { SignUpValidation, UpdateValidation } = require("../Validation/SignUpDataValidation");
 //validation section
 const validate = require("../Common/Validate");
 
 //user registration route and validation
-routes.post("/signup", validate(SingUpValidation()), signUpController.signUp);
+routes.post("/signup", validate(SignUpValidation()), signUpController.signUp);
 
 //user update route and validation
-routes.put("/updateUser/:id", validate(SingUpValidation()),signUpController.userUpdate);
+routes.put("/updateUser/:id", validate(UpdateValidation()),signUpController.userUpdate);
 
 //user delete route
 routes.delete("/deleteUser/:id", signUpController.deleteUser);

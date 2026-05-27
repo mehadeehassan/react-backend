@@ -69,6 +69,7 @@ const signUpController = {
       success: isDataAllUserLimit.statusCode == 200 ? true : false,
       message: isDataAllUserLimit.message,
       data: isDataAllUserLimit.data,
+      total: isDataAllUserLimit.total,
       ...(isDataAllUserLimit.errors && { errors: isDataAllUserLimit.errors }),
       metadata: {
         timestamps: new Date(),

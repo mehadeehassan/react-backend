@@ -41,19 +41,22 @@ const SignUpService = {
 
   //update user by id
   userUpdate: async (req) => {
-    const { email, id } = req.body;
+    // const { email } = req.body;
+    // const id = req.params.id;
     // console.log(email,id);
+    const { email } = req.body;
+    const id = parseInt(req.params.id);
 
     //check email
     const emailInUse = await SignUpRepository.checkEmailForUpdate(email, id);
     if (emailInUse) {
       return {
         statusCode: 400,
-        message: "Email already exist",
+        message: "This email is already in use",
         errors: [
           {
             field: "email",
-            message: "Email already exist",
+            message: "This email is already in use",
           },
         ],
       };
@@ -69,11 +72,11 @@ const SignUpService = {
     //user update failed
     return {
       statusCode: 500,
-      message: "User update failed",
+      message: "This email is already in use",
       errors: [
         {
           field: "email",
-          message: "User update failed",
+          message: "This email is already in use",
         },
       ],
     };
@@ -81,7 +84,7 @@ const SignUpService = {
 
   //delete user by id
   deleteUser: async (req) => {
-    const id = req.body.id;
+    const id = req.params.id;
     const isDataDeleted = await SignUpRepository.deleteUser(id);
     if (isDataDeleted[0]) {
       return {
@@ -126,26 +129,44 @@ const SignUpService = {
   },
 
   //get all user limit
+  // getAllUserLimit: async (req) => {
+  //   const isDataAllUserLimit = await SignUpRepository.getAllUserLimit();
+  //   if (isDataAllUserLimit[0]) {
+  //     return {
+  //       statusCode: 200,
+  //       message: "All user data retrieved successfully",
+  //       data: isDataAllUserLimit[0],
+  //     };
+  //   }
+  //   //user data failed
+  //   return {
+  //     statusCode: 404,
+  //     message: "No users found",
+  //     errors: [
+  //       {
+  //         field: "id",
+  //         message: "No users found",
+  //       },
+  //     ],
+  //   };
+  // },
+
   getAllUserLimit: async (req) => {
-    const isDataAllUserLimit = await SignUpRepository.getAllUserLimit();
-    if (isDataAllUserLimit[0]) {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const [rows] = await SignUpRepository.getAllUserLimit(page, limit);
+    const total = await SignUpRepository.getUserCount();
+
+    if (rows) {
       return {
         statusCode: 200,
         message: "All user data retrieved successfully",
-        data: isDataAllUserLimit[0],
+        data: rows,
+        total: total,
       };
     }
-    //user data failed
-    return {
-      statusCode: 404,
-      message: "No users found",
-      errors: [
-        {
-          field: "id",
-          message: "No users found",
-        },
-      ],
-    };
+    return { statusCode: 404, message: "No users found" };
   },
 };
 module.exports = SignUpService;
