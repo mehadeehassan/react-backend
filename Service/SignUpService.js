@@ -127,30 +127,6 @@ const SignUpService = {
       ],
     };
   },
-
-  //get all user limit
-  // getAllUserLimit: async (req) => {
-  //   const isDataAllUserLimit = await SignUpRepository.getAllUserLimit();
-  //   if (isDataAllUserLimit[0]) {
-  //     return {
-  //       statusCode: 200,
-  //       message: "All user data retrieved successfully",
-  //       data: isDataAllUserLimit[0],
-  //     };
-  //   }
-  //   //user data failed
-  //   return {
-  //     statusCode: 404,
-  //     message: "No users found",
-  //     errors: [
-  //       {
-  //         field: "id",
-  //         message: "No users found",
-  //       },
-  //     ],
-  //   };
-  // },
-
   getAllUserLimit: async (req) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
