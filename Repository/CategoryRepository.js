@@ -27,7 +27,7 @@ const CategoryRepository = {
   deleteCategory: async (req) => {
     try {
       return await database.query(
-        `DELETE FROM category WHERE id = ${req.body.id}`,
+        `DELETE FROM category WHERE id = ${req.params.id}`,
       );
     } catch (error) {
       console.log(error.message);

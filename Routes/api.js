@@ -3,12 +3,15 @@ const routes = require("express").Router();
 //controller section
 const signUpController = require("../Controller/SignUpController");
 const CategoryController = require("../Controller/CategoryController");
+const BrandController = require("../Controller/BrandController");
 //validation section
 const { SignUpValidation, UpdateValidation } = require("../Validation/SignUpDataValidation");
 const CategoryValidation = require("../Validation/CategoryValidation");
+const BrandValidation = require("../Validation/BrandValidation");
 //validation section
 const validate = require("../Common/Validate");
 
+// All User route and validation
 
 //user registration route and validation
 routes.post("/signup", validate(SignUpValidation()), signUpController.signUp);
@@ -25,6 +28,10 @@ routes.get("/getUserById/:id", signUpController.getUserById);
 //get all user limit route
 routes.get("/getAllUserLimit", signUpController.getAllUserLimit);
 
+//End of user routes
+
+//All Category routes and validation
+
 // add category routes
 routes.post("/addCategory", validate(CategoryValidation()), CategoryController.addCategory);
 
@@ -36,5 +43,23 @@ routes.delete("/deleteCategory/:id", CategoryController.deleteCategory);
 
 // get all category route
 routes.get("/getAllCategory", CategoryController.getAllCategory);
+
+//end of category routes
+
+//All Brand routes and validation
+
+// add brand routes
+routes.post("/addBrand", validate(BrandValidation()), BrandController.addBrand);
+
+// update brand route
+routes.put("/updateBrand/:id", validate(BrandValidation()), BrandController.updateBrand);
+
+// delete brand route
+routes.delete("/deleteBrand/:id", BrandController.deleteBrand);
+
+// get all brand route
+routes.get("/getAllBrand", BrandController.getAllBrand);
+
+//end of brand routes
 
 module.exports = routes;
