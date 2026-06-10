@@ -4,6 +4,9 @@ const routes = require("express").Router();
 const signUpController = require("../Controller/SignUpController");
 const CategoryController = require("../Controller/CategoryController");
 const BrandController = require("../Controller/BrandController");
+const ProductsListController = require("../Controller/ProductsListController");
+const ProductListValidation = require("../Validation/ProductsListValidation");
+const { upload } = require("../Config/cloudinary");
 //validation section
 const { SignUpValidation, UpdateValidation } = require("../Validation/SignUpDataValidation");
 const CategoryValidation = require("../Validation/CategoryValidation");
@@ -61,5 +64,30 @@ routes.delete("/deleteBrand/:id", BrandController.deleteBrand);
 routes.get("/getAllBrand", BrandController.getAllBrand);
 
 //end of brand routes
+
+//All Product routes and validation
+
+// add product routes
+// routes.post("/addProduct", upload.single("image"), validate(ProductListValidation()), ProductsListController.addProduct);
+routes.post("/addProduct", (req, res, next) => {
+  upload.single("image")(req, res, (err) => {
+    if (err) {
+      console.log("Upload Error:", err);
+      return res.status(500).json({ message: err.message });
+    }
+    next();
+  });
+}, validate(ProductListValidation()), ProductsListController.addProduct);
+
+// update product route
+routes.put("/updateProduct", upload.single("image"), validate(ProductListValidation()), ProductsListController.updateProduct);
+
+// delete product route
+routes.delete("/deleteProduct", ProductsListController.deleteProduct);
+
+// get all product route
+routes.get("/getAllProduct", ProductsListController.getAllProduct);
+
+//end of product routes
 
 module.exports = routes;
