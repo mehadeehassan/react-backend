@@ -15,7 +15,7 @@ const ProductsListController = {
     return res.status(isDataGet.statusCode).json({
       success: isDataGet.statusCode == 200 ? true : false,
       message: isDataGet.message,
-      data: isDataSaved.data,
+      data: isDataGet.data,
       total: isDataGet.total,
       metadata: { timestamps: new Date() },
     });

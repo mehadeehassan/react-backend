@@ -83,7 +83,7 @@ routes.post("/addProduct", (req, res, next) => {
 routes.put("/updateProduct", upload.single("image"), validate(ProductListValidation()), ProductsListController.updateProduct);
 
 // delete product route
-routes.delete("/deleteProduct", ProductsListController.deleteProduct);
+routes.delete("/deleteProduct/:id", ProductsListController.deleteProduct);
 
 // get all product route
 routes.get("/getAllProduct", ProductsListController.getAllProduct);

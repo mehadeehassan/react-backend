@@ -17,8 +17,10 @@ const ProductsListRepository = {
     try {
       const offset = (page - 1) * limit;
       const [rows] = await database.query(`
-      SELECT p.id, p.product_code, p.product_name, p.status, p.description, p.image,
-             c.category_name, b.brand_name
+      SELECT ROW_NUMBER() OVER (ORDER BY p.id) as serial,
+        p.id, p.product_code, p.product_name, p.status, p.description, p.image,
+        p.category_id, p.brand_id,
+        c.category_name, b.brand_name
       FROM products p
       LEFT JOIN category c ON p.category_id = c.id
       LEFT JOIN brand b ON p.brand_id = b.id
