@@ -3,7 +3,14 @@ const ProductsListRepository = require("../Repository/ProductsListRepository");
 const ProductsListService = {
   addProduct: async (req) => {
     try {
-      await ProductsListRepository.createProduct(req);
+      const result = await ProductsListRepository.createProduct(req);
+      if (result?.error) {
+        return {
+          statusCode: 400,
+          message: result.message,
+          errors: [{ field: "image", message: result.message }],
+        };
+      }
       return { statusCode: 200, message: "Product added successfully" };
     } catch (error) {
       return { statusCode: 500, message: "Something went wrong" };

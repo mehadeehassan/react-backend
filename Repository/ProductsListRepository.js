@@ -4,6 +4,9 @@ const ProductsListRepository = {
   createProduct: async (req) => {
     try {
       const imagePath = req.file ? req.file.path : null;
+      if (!imagePath) {
+        return { error: true, message: "Image is required" };
+      }
       return await database.query(
         `INSERT INTO products (product_code, product_name, category_id, brand_id, status, description, image) 
        VALUES ('${req.body.product_code}', '${req.body.product_name}', ${req.body.category_id}, ${req.body.brand_id}, ${req.body.status}, '${req.body.description}', '${imagePath}')`,

@@ -6,6 +6,7 @@ const ProductsListController = {
     return res.status(isDataSaved.statusCode).json({
       success: isDataSaved.statusCode == 200 ? true : false,
       message: isDataSaved.message,
+      errors: isDataSaved.errors || [],
       metadata: { timestamps: new Date() },
     });
   },
