@@ -17,9 +17,10 @@ const SignUpRepository = {
 
   //user registration
   createSignUp: async (req) => {
+    const status = req.body.status ?? 1;
     try {
       return await database.query(
-        `INSERT INTO users (name, email, password, status) VALUES ('${req.body.name}', '${req.body.email}', '${req.body.password}', ${req.body.status})`,
+        `INSERT INTO users (name, email, password, status) VALUES ('${req.body.name}', '${req.body.email}', '${req.body.password}', ${status})`,
       );
     } catch (error) {
       console.log(error.message);

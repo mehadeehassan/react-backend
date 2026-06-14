@@ -3,7 +3,8 @@ const database = require("../Config/database");
 const ProductsListRepository = {
   createProduct: async (req) => {
     try {
-      const imagePath = req.file ? req.file.path : null;
+      // const imagePath = req.file ? req.file.path : null;
+      const imagePath = req.file ? req.file.filename : null;
       if (!imagePath) {
         return { error: true, message: "Image is required" };
       }
@@ -49,7 +50,8 @@ const ProductsListRepository = {
 
   updateProduct: async (req) => {
     try {
-      const imagePath = req.file ? req.file.path : null;
+      // const imagePath = req.file ? req.file.path : null;
+      const imagePath = req.file ? req.file.filename : null;
       const query = imagePath
         ? `UPDATE products SET product_code='${req.body.product_code}', product_name='${req.body.product_name}', category_id=${req.body.category_id}, brand_id=${req.body.brand_id}, status=${req.body.status}, description='${req.body.description}', image='${imagePath}' WHERE id=${req.body.id}`
         : `UPDATE products SET product_code='${req.body.product_code}', product_name='${req.body.product_name}', category_id=${req.body.category_id}, brand_id=${req.body.brand_id}, status=${req.body.status}, description='${req.body.description}' WHERE id=${req.body.id}`;

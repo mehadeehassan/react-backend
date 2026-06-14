@@ -1,3 +1,4 @@
+const path = require('path');
 require("dotenv").config();
 const express = require("express");
 //routes section
@@ -25,6 +26,8 @@ app.use(express.json());
 //cors section
 app.use(cors());
 //routes section
+// app.use('/Products', express.static('Public/Products'));
+app.use('/Products', express.static(path.join(__dirname, 'Public/Products')));
 app.use(routes);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

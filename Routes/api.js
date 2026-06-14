@@ -5,10 +5,13 @@ const signUpController = require("../Controller/SignUpController");
 const CategoryController = require("../Controller/CategoryController");
 const BrandController = require("../Controller/BrandController");
 const ProductsListController = require("../Controller/ProductsListController");
-const ProductListValidation = require("../Validation/ProductsListValidation");
-const  { upload }  = require("../Config/cloudinary");
+const AdminLoginController = require("../Controller/AdminLoginController");
+//database section
+const  upload  = require("../Config/cloudinary");
 //validation section
 const { SignUpValidation, UpdateValidation } = require("../Validation/SignUpDataValidation");
+const ProductListValidation = require("../Validation/ProductsListValidation");
+const AdminLoginValidation = require("../Validation/AdminLoginValidation");
 const CategoryValidation = require("../Validation/CategoryValidation");
 const BrandValidation = require("../Validation/BrandValidation");
 //validation section
@@ -80,5 +83,8 @@ routes.delete("/deleteProduct/:id", ProductsListController.deleteProduct);
 routes.get("/getAllProduct", ProductsListController.getAllProduct);
 
 //end of product routes
+
+// admin login route
+routes.post("/adminLogin", validate(AdminLoginValidation()), AdminLoginController.adminLogin);
 
 module.exports = routes;
