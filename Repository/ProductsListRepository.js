@@ -9,8 +9,8 @@ const ProductsListRepository = {
         return { error: true, message: "Image is required" };
       }
       return await database.query(
-        `INSERT INTO products (product_code, product_name, category_id, brand_id, status, description, image) 
-       VALUES ('${req.body.product_code}', '${req.body.product_name}', ${req.body.category_id}, ${req.body.brand_id}, ${req.body.status}, '${req.body.description}', '${imagePath}')`,
+        `INSERT INTO products (product_code, product_name, product_price ,category_id, brand_id, status, description, image) 
+       VALUES ('${req.body.product_code}', '${req.body.product_price}','${req.body.product_name}', ${req.body.category_id}, ${req.body.brand_id}, ${req.body.status}, '${req.body.description}', '${imagePath}')`,
       );
     } catch (error) {
       console.log(error.message);
@@ -22,7 +22,7 @@ const ProductsListRepository = {
       const offset = (page - 1) * limit;
       const [rows] = await database.query(`
       SELECT ROW_NUMBER() OVER (ORDER BY p.id) as serial,
-        p.id, p.product_code, p.product_name, p.status, p.description, p.image,
+        p.id, p.product_code, p.product_name, p.product_price, p.status, p.description, p.image,
         p.category_id, p.brand_id,
         c.category_name, b.brand_name
       FROM products p
@@ -53,8 +53,8 @@ const ProductsListRepository = {
       // const imagePath = req.file ? req.file.path : null;
       const imagePath = req.file ? req.file.filename : null;
       const query = imagePath
-        ? `UPDATE products SET product_code='${req.body.product_code}', product_name='${req.body.product_name}', category_id=${req.body.category_id}, brand_id=${req.body.brand_id}, status=${req.body.status}, description='${req.body.description}', image='${imagePath}' WHERE id=${req.body.id}`
-        : `UPDATE products SET product_code='${req.body.product_code}', product_name='${req.body.product_name}', category_id=${req.body.category_id}, brand_id=${req.body.brand_id}, status=${req.body.status}, description='${req.body.description}' WHERE id=${req.body.id}`;
+        ? `UPDATE products SET product_code='${req.body.product_code}', product_name='${req.body.product_name}', product_price='${req.body.product_price}' ,category_id=${req.body.category_id}, brand_id=${req.body.brand_id}, status=${req.body.status}, description='${req.body.description}', image='${imagePath}' WHERE id=${req.body.id}`
+        : `UPDATE products SET product_code='${req.body.product_code}', product_name='${req.body.product_name}', product_price='${req.body.product_price}' ,category_id=${req.body.category_id}, brand_id=${req.body.brand_id}, status=${req.body.status}, description='${req.body.description}' WHERE id=${req.body.id}`;
       return await database.query(query);
     } catch (error) {
       console.log(error.message);
