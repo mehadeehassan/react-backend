@@ -20,7 +20,7 @@ const AdminLoginService = {
       }
       const token = jwt.sign(
         { id: admin.id, email: admin.email },
-        "admin_secret_key",
+        process.env.JWT_SECRET,
         { expiresIn: "1d" }
       );
 

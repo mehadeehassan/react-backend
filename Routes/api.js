@@ -6,85 +6,48 @@ const CategoryController = require("../Controller/CategoryController");
 const BrandController = require("../Controller/BrandController");
 const ProductsListController = require("../Controller/ProductsListController");
 const AdminLoginController = require("../Controller/AdminLoginController");
-//database section
+
+//middleware section
+const VerifyAdmin = require("../Middleware/VerifyAdmin");
+//config section
 const  upload  = require("../Config/cloudinary");
+//common section
+const validate = require("../Common/Validate");
+
 //validation section
 const { SignUpValidation, UpdateValidation } = require("../Validation/SignUpDataValidation");
 const ProductListValidation = require("../Validation/ProductsListValidation");
 const AdminLoginValidation = require("../Validation/AdminLoginValidation");
 const CategoryValidation = require("../Validation/CategoryValidation");
 const BrandValidation = require("../Validation/BrandValidation");
-//validation section
-const validate = require("../Common/Validate");
 
-// All User route and validation
 
-//user registration route and validation
-routes.post("/signup", validate(SignUpValidation()), signUpController.signUp);
-
-//user update route and validation
-routes.put("/updateUser/:id", validate(UpdateValidation()),signUpController.userUpdate);
-
-//user delete route
-routes.delete("/deleteUser/:id", signUpController.deleteUser);
-
-//get user by id route
-routes.get("/getUserById/:id", signUpController.getUserById);
-
-//get all user limit route
-routes.get("/getAllUserLimit", signUpController.getAllUserLimit);
-
-//End of user routes
-
-//All Category routes and validation
-
-// add category routes
-routes.post("/addCategory", validate(CategoryValidation()), CategoryController.addCategory);
-
-// update category route
-routes.put("/updateCategory/:id", validate(CategoryValidation()), CategoryController.updateCategory);
-
-// delete category route
-routes.delete("/deleteCategory/:id", CategoryController.deleteCategory);
-
-// get all category route
-routes.get("/getAllCategory", CategoryController.getAllCategory);
-
-//end of category routes
-
-//All Brand routes and validation
-
-// add brand routes
-routes.post("/addBrand", validate(BrandValidation()), BrandController.addBrand);
-
-// update brand route
-routes.put("/updateBrand/:id", validate(BrandValidation()), BrandController.updateBrand);
-
-// delete brand route
-routes.delete("/deleteBrand/:id", BrandController.deleteBrand);
-
-// get all brand route
-routes.get("/getAllBrand", BrandController.getAllBrand);
-
-//end of brand routes
-
-//All Product routes and validation
-
-// add product routes
-routes.post("/addProduct", upload.single("image"), validate(ProductListValidation()), ProductsListController.addProduct);
-
-// update product route
-routes.put("/updateProduct", upload.single("image"), validate(ProductListValidation()), ProductsListController.updateProduct);
-
-// delete product route
-routes.delete("/deleteProduct/:id", ProductsListController.deleteProduct);
-
-// get all product route
-routes.get("/getAllProduct", ProductsListController.getAllProduct);
-
-//end of product routes
-
-// admin login route
+// admin login routes
 routes.post("/adminLogin", validate(AdminLoginValidation()), AdminLoginController.adminLogin);
+
+// user registration
+routes.post("/signup", VerifyAdmin,validate(SignUpValidation()), signUpController.signUp);
+routes.put("/updateUser/:id", VerifyAdmin,validate(UpdateValidation()),signUpController.userUpdate);
+routes.delete("/deleteUser/:id", VerifyAdmin,signUpController.deleteUser);
+routes.get("/getUserById/:id", VerifyAdmin,signUpController.getUserById);
+routes.get("/getAllUserLimit", VerifyAdmin,signUpController.getAllUserLimit);
+
+// category routes
+routes.post("/addCategory", VerifyAdmin,validate(CategoryValidation()), CategoryController.addCategory);
+routes.put("/updateCategory/:id", VerifyAdmin,validate(CategoryValidation()), CategoryController.updateCategory);
+routes.delete("/deleteCategory/:id", VerifyAdmin,CategoryController.deleteCategory);
+routes.get("/getAllCategory", VerifyAdmin,CategoryController.getAllCategory);
+
+// brand routes
+routes.post("/addBrand", VerifyAdmin,validate(BrandValidation()), BrandController.addBrand);
+routes.put("/updateBrand/:id", VerifyAdmin,validate(BrandValidation()), BrandController.updateBrand);
+routes.delete("/deleteBrand/:id", VerifyAdmin,BrandController.deleteBrand);
+routes.get("/getAllBrand", VerifyAdmin,BrandController.getAllBrand);
+
+// product routes
+routes.post("/addProduct", VerifyAdmin,upload.single("image"), validate(ProductListValidation()), ProductsListController.addProduct);
+routes.put("/updateProduct", VerifyAdmin,upload.single("image"), validate(ProductListValidation()), ProductsListController.updateProduct);
+routes.delete("/deleteProduct/:id", VerifyAdmin,ProductsListController.deleteProduct);
+routes.get("/getAllProduct", VerifyAdmin,ProductsListController.getAllProduct);
 
 module.exports = routes;

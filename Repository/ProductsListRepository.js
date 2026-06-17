@@ -10,7 +10,7 @@ const ProductsListRepository = {
       }
       return await database.query(
         `INSERT INTO products (product_code, product_name, product_price ,category_id, brand_id, status, description, image) 
-       VALUES ('${req.body.product_code}', '${req.body.product_price}','${req.body.product_name}', ${req.body.category_id}, ${req.body.brand_id}, ${req.body.status}, '${req.body.description}', '${imagePath}')`,
+       VALUES ('${req.body.product_code}','${req.body.product_name}',  '${req.body.product_price}', ${req.body.category_id}, ${req.body.brand_id}, ${req.body.status}, '${req.body.description}', '${imagePath}')`,
       );
     } catch (error) {
       console.log(error.message);
