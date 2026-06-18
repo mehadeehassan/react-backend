@@ -34,19 +34,29 @@ const CategoryRepository = {
       return [];
     }
   },
+  
+  //get Category By Id
+  getCategoryById: async (id) => {
+    try {
+      return await database.query(`SELECT * FROM category WHERE id = ${id}`);
+    } catch (error) {
+      console.log(error.message);
+      return [];
+    }
+  },
 
   //get all category repository
   getAllCategory: async () => {
-  try {
-    const [rows] = await database.query(
-      `SELECT ROW_NUMBER() OVER (ORDER BY id) as serial, id, category_name FROM category`
-    );
-    return rows;
-  } catch (error) {
-    console.log(error.message);
-    return [];
-  }
-},
+    try {
+      const [rows] = await database.query(
+        `SELECT ROW_NUMBER() OVER (ORDER BY id) as serial, id, category_name FROM category`,
+      );
+      return rows;
+    } catch (error) {
+      console.log(error.message);
+      return [];
+    }
+  },
   //total category count
   getCategoryCount: async () => {
     try {

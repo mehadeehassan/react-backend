@@ -44,17 +44,30 @@ const CategoryController = {
     });
   },
 
+  // get Category by Id
+  getCategoryById: async (req, res) => {
+    const isDataById = await CategoryService.getCategoryById(req);
+    return res.status(isDataById.statusCode).json({
+      success: isDataById.statusCode == 200 ? true : false,
+      message: isDataById.message,
+      ...(isDataById.errors && { errors: isDataById.errors }),
+      metadata: {
+        timestamps: new Date(),
+      },
+    });
+  },
+
   //get all category controller
   getAllCategory: async (req, res) => {
-  const isDataSaved = await CategoryService.getAllCategory(req);
-  return res.status(isDataSaved.statusCode).json({
-    success: isDataSaved.statusCode == 200 ? true : false,
-    message: isDataSaved.message,
-    data: isDataSaved.data,
-    total: isDataSaved.total,
-    metadata: { timestamps: new Date() },
-  });
-},
+    const isDataSaved = await CategoryService.getAllCategory(req);
+    return res.status(isDataSaved.statusCode).json({
+      success: isDataSaved.statusCode == 200 ? true : false,
+      message: isDataSaved.message,
+      data: isDataSaved.data,
+      total: isDataSaved.total,
+      metadata: { timestamps: new Date() },
+    });
+  },
 };
 
 module.exports = CategoryController;

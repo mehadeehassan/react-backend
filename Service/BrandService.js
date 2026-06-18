@@ -3,76 +3,84 @@ const BrandRepository = require("../Repository/BrandRepository");
 const BrandService = {
   //add brand service
   addBrand: async (req) => {
-    try {
-      await BrandRepository.createBrand(req);
+    const isDataSaved = await BrandRepository.createBrand(req);
+    if (isDataSaved[0]) {
       return {
         statusCode: 200,
         message: "Brand added successfully",
       };
-    } catch (error) {
-      console.log(error.message);
-      return {
-        statusCode: 500,
-        message: "Something went wrong",
-      };
     }
+    //brand add failed
+    return {
+      statusCode: 500,
+      message: "Brand creation failed",
+      errors: [
+        {
+          field: "brand",
+          message: "Brand creation failed",
+        },
+      ],
+    };
   },
 
   //update brand service
   updateBrand: async (req) => {
-    try {
-      await BrandRepository.updateBrand(req);
+    const isDataUpdated = await BrandRepository.updateBrand(req);
+    if (isDataUpdated[0]) {
       return {
         statusCode: 200,
         message: "Brand updated successfully",
       };
-    } catch (error) {
-      console.log(error.message);
-      return {
-        statusCode: 500,
-        message: "Something went wrong",
-      };
     }
+    //brand update failed
+    return {
+      statusCode: 500,
+      message: "Brand update failed",
+      errors: [
+        {
+          field: "brand",
+          message: "Brand update failed",
+        },
+      ],
+    };
   },
 
   //delete brand service
   deleteBrand: async (req) => {
-    try {
-      await BrandRepository.deleteBrand(req);
+    const isDataDeleted = await BrandRepository.deleteBrand(req);
+    if (isDataDeleted[0]) {
       return {
         statusCode: 200,
         message: "Brand deleted successfully",
       };
-    } catch (error) {
-      console.log(error.message);
-      return {
-        statusCode: 500,
-        message: "Something went wrong",
-      };
     }
+    //brand delete failed
+    return {
+      statusCode: 500,
+      message: "Brand delete failed",
+      errors: [
+        {
+          field: "id",
+          message: "Brand delete failed",
+        },
+      ],
+    };
   },
 
   //get all brand service
   getAllBrand: async () => {
-    try {
-      const data = await BrandRepository.getAllBrand();
-      return {
-        statusCode: 200,
-        message: "Success",
-        data: data,
-        total: data.length,
-      };
-    } catch (error) {
-      return { statusCode: 500, message: "Something went wrong" };
-    }
+    const data = await BrandRepository.getAllBrand();
+    return {
+      statusCode: 200,
+      message: "Success",
+      data: data,
+      total: data.length,
+    };
   },
+
   //total brand count service
   getBrandCount: async () => {
-    try {
-      return await BrandRepository.getBrandCount();
-    } catch (error) {
-      return { statusCode: 500, message: "Something went wrong" };
-    }
+    return await BrandRepository.getBrandCount();
   },
 };
 

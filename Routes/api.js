@@ -36,18 +36,19 @@ routes.get("/getAllUserLimit", VerifyAdmin,signUpController.getAllUserLimit);
 routes.post("/addCategory", VerifyAdmin,validate(CategoryValidation()), CategoryController.addCategory);
 routes.put("/updateCategory/:id", VerifyAdmin,validate(CategoryValidation()), CategoryController.updateCategory);
 routes.delete("/deleteCategory/:id", VerifyAdmin,CategoryController.deleteCategory);
-routes.get("/getAllCategory", VerifyAdmin,CategoryController.getAllCategory);
+routes.get("/getCategoryById/:id", VerifyAdmin,CategoryController.getCategoryById);
+routes.get("/getAllCategory",CategoryController.getAllCategory);
 
 // brand routes
 routes.post("/addBrand", VerifyAdmin,validate(BrandValidation()), BrandController.addBrand);
 routes.put("/updateBrand/:id", VerifyAdmin,validate(BrandValidation()), BrandController.updateBrand);
 routes.delete("/deleteBrand/:id", VerifyAdmin,BrandController.deleteBrand);
-routes.get("/getAllBrand", VerifyAdmin,BrandController.getAllBrand);
+routes.get("/getAllBrand",BrandController.getAllBrand);
 
 // product routes
 routes.post("/addProduct", VerifyAdmin,upload.single("image"), validate(ProductListValidation()), ProductsListController.addProduct);
 routes.put("/updateProduct", VerifyAdmin,upload.single("image"), validate(ProductListValidation()), ProductsListController.updateProduct);
 routes.delete("/deleteProduct/:id", VerifyAdmin,ProductsListController.deleteProduct);
-routes.get("/getAllProduct", VerifyAdmin,ProductsListController.getAllProduct);
+routes.get("/getAllProduct",ProductsListController.getAllProduct);
 
 module.exports = routes;
