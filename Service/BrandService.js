@@ -1,86 +1,116 @@
 const BrandRepository = require("../Repository/BrandRepository");
 
 const BrandService = {
-  //add brand service
   addBrand: async (req) => {
-    const isDataSaved = await BrandRepository.createBrand(req);
-    if (isDataSaved[0]) {
+    try {
+      const isDataSaved = await BrandRepository.createBrand(req);
+      if (isDataSaved[0]) {
+        return { statusCode: 200, message: "Brand added successfully" };
+      }
       return {
-        statusCode: 200,
-        message: "Brand added successfully",
+        statusCode: 500,
+        message: "Brand creation failed",
+        errors: [
+          {
+            field: "brand_name",
+            message: "Failed to add brand. Please try again.",
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "Brand creation failed",
+        errors: [
+          {
+            field: "brand_name",
+            message: "Something went wrong. Please try again.",
+          },
+        ],
       };
     }
-    //brand add failed
-    return {
-      statusCode: 500,
-      message: "Brand creation failed",
-      errors: [
-        {
-          field: "brand",
-          message: "Brand creation failed",
-        },
-      ],
-    };
   },
 
-  //update brand service
   updateBrand: async (req) => {
-    const isDataUpdated = await BrandRepository.updateBrand(req);
-    if (isDataUpdated[0]) {
+    try {
+      const isDataUpdated = await BrandRepository.updateBrand(req);
+      if (isDataUpdated[0]) {
+        return { statusCode: 200, message: "Brand updated successfully" };
+      }
       return {
-        statusCode: 200,
-        message: "Brand updated successfully",
+        statusCode: 500,
+        message: "Brand update failed",
+        errors: [
+          {
+            field: "brand_name",
+            message: "Failed to update brand. Please try again.",
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "Brand update failed",
+        errors: [
+          {
+            field: "brand_name",
+            message: "Something went wrong. Please try again.",
+          },
+        ],
       };
     }
-    //brand update failed
-    return {
-      statusCode: 500,
-      message: "Brand update failed",
-      errors: [
-        {
-          field: "brand",
-          message: "Brand update failed",
-        },
-      ],
-    };
   },
 
-  //delete brand service
   deleteBrand: async (req) => {
-    const isDataDeleted = await BrandRepository.deleteBrand(req);
-    if (isDataDeleted[0]) {
+    try {
+      const isDataDeleted = await BrandRepository.deleteBrand(req);
+      if (isDataDeleted[0]) {
+        return { statusCode: 200, message: "Brand deleted successfully" };
+      }
       return {
-        statusCode: 200,
-        message: "Brand deleted successfully",
+        statusCode: 500,
+        message: "Brand delete failed",
+        errors: [
+          { field: "id", message: "Failed to delete brand. Please try again." },
+        ],
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "Brand delete failed",
+        errors: [
+          { field: "id", message: "Something went wrong. Please try again." },
+        ],
       };
     }
-    //brand delete failed
-    return {
-      statusCode: 500,
-      message: "Brand delete failed",
-      errors: [
-        {
-          field: "id",
-          message: "Brand delete failed",
-        },
-      ],
-    };
   },
 
-  //get all brand service
   getAllBrand: async () => {
-    const data = await BrandRepository.getAllBrand();
-    return {
-      statusCode: 200,
-      message: "Success",
-      data: data,
-      total: data.length,
-    };
+    try {
+      const data = await BrandRepository.getAllBrand();
+      return {
+        statusCode: 200,
+        message: "Success",
+        data: data,
+        total: data.length,
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "Failed to fetch brands",
+        errors: [
+          { field: "brand", message: "Unable to load brands. Please refresh." },
+        ],
+      };
+    }
   },
 
-  //total brand count service
   getBrandCount: async () => {
-    return await BrandRepository.getBrandCount();
+    try {
+      return await BrandRepository.getBrandCount();
+    } catch (error) {
+      return 0;
+    }
   },
 };
 

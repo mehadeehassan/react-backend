@@ -1,148 +1,170 @@
 const SignUpRepository = require("../Repository/SignUpRepository");
 
 const SignUpService = {
-  //user registration service
   signUp: async (req) => {
-    const email = req.body.email;
-    //check email
-    const existingUser = await SignUpRepository.checkUserIsExistByEmail(email);
-    if (existingUser) {
+    try {
+      const email = req.body.email;
+      const existingUser =
+        await SignUpRepository.checkUserIsExistByEmail(email);
+      if (existingUser) {
+        return {
+          statusCode: 400,
+          message: "Email already exists",
+          errors: [
+            { field: "email", message: "This email is already registered." },
+          ],
+        };
+      }
+      const isDataSaved = await SignUpRepository.createSignUp(req);
+      if (isDataSaved[0]) {
+        return { statusCode: 200, message: "User registered successfully" };
+      }
       return {
-        statusCode: 400,
-        message: "Email already exist",
+        statusCode: 500,
+        message: "User registration failed",
         errors: [
           {
             field: "email",
-            message: "Email already exist",
+            message: "Failed to register user. Please try again.",
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "User registration failed",
+        errors: [
+          {
+            field: "email",
+            message: "Something went wrong. Please try again.",
           },
         ],
       };
     }
-    //create user data
-    const isDataSaved = await SignUpRepository.createSignUp(req);
-    if (isDataSaved[0]) {
-      return {
-        statusCode: 200,
-        message: "User registered successfully",
-      };
-    }
-    //user registration failed
-    return {
-      statusCode: 500,
-      message: "User registration failed",
-      errors: [
-        {
-          field: "email",
-          message: "User registration failed",
-        },
-      ],
-    };
   },
 
-  //update user by id
   userUpdate: async (req) => {
-    // const { email } = req.body;
-    // const id = req.params.id;
-    // console.log(email,id);
-    const { email } = req.body;
-    const id = parseInt(req.params.id);
-
-    //check email
-    const emailInUse = await SignUpRepository.checkEmailForUpdate(email, id);
-    if (emailInUse) {
+    try {
+      const { email } = req.body;
+      const id = parseInt(req.params.id);
+      const emailInUse = await SignUpRepository.checkEmailForUpdate(email, id);
+      if (emailInUse) {
+        return {
+          statusCode: 400,
+          message: "Email already in use",
+          errors: [
+            {
+              field: "email",
+              message: "This email is already used by another account.",
+            },
+          ],
+        };
+      }
+      const isDataUpdated = await SignUpRepository.updateUser(req);
+      if (isDataUpdated[0]) {
+        return { statusCode: 200, message: "User updated successfully" };
+      }
       return {
-        statusCode: 400,
-        message: "This email is already in use",
+        statusCode: 500,
+        message: "User update failed",
         errors: [
           {
             field: "email",
-            message: "This email is already in use",
+            message: "Failed to update user. Please try again.",
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "User update failed",
+        errors: [
+          {
+            field: "email",
+            message: "Something went wrong. Please try again.",
           },
         ],
       };
     }
-    //update user data
-    const isDataUpdated = await SignUpRepository.updateUser(req);
-    if (isDataUpdated[0]) {
-      return {
-        statusCode: 200,
-        message: "User updated successfully",
-      };
-    }
-    //user update failed
-    return {
-      statusCode: 500,
-      message: "This email is already in use",
-      errors: [
-        {
-          field: "email",
-          message: "This email is already in use",
-        },
-      ],
-    };
   },
 
-  //delete user by id
   deleteUser: async (req) => {
-    const id = req.params.id;
-    const isDataDeleted = await SignUpRepository.deleteUser(id);
-    if (isDataDeleted[0]) {
+    try {
+      const id = req.params.id;
+      const isDataDeleted = await SignUpRepository.deleteUser(id);
+      if (isDataDeleted[0]) {
+        return { statusCode: 200, message: "User deleted successfully" };
+      }
       return {
-        statusCode: 200,
-        message: "User deleted successfully",
+        statusCode: 500,
+        message: "User delete failed",
+        errors: [
+          { field: "id", message: "Failed to delete user. Please try again." },
+        ],
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "User delete failed",
+        errors: [
+          { field: "id", message: "Something went wrong. Please try again." },
+        ],
       };
     }
-    //user delete failed
-    return {
-      statusCode: 500,
-      message: "User delete failed",
-      errors: [
-        {
-          field: "id",
-          message: "User delete failed",
-        },
-      ],
-    };
   },
 
-  //get user by id
   getUserById: async (req) => {
-    const id = req.body.id;
-    const isDataById = await SignUpRepository.getUserById(id);
-    if (isDataById[0]) {
+    try {
+      const id = req.body.id;
+      const isDataById = await SignUpRepository.getUserById(id);
+      if (isDataById[0]) {
+        return { statusCode: 200, message: "User data retrieved successfully" };
+      }
       return {
-        statusCode: 200,
-        message: "User data retrieved successfully",
+        statusCode: 404,
+        message: "User not found",
+        errors: [{ field: "id", message: "No user found with this ID." }],
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "User not found",
+        errors: [
+          { field: "id", message: "Something went wrong. Please try again." },
+        ],
       };
     }
-    //user data failed
-    return {
-      statusCode: 404,
-      message: "User not found",
-      errors: [
-        {
-          field: "id",
-          message: "User not found",
-        },
-      ],
-    };
   },
+
   getAllUserLimit: async (req) => {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-
-    const [rows] = await SignUpRepository.getAllUserLimit(page, limit);
-    const total = await SignUpRepository.getUserCount();
-
-    if (rows) {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 10;
+      const [rows] = await SignUpRepository.getAllUserLimit(page, limit);
+      const total = await SignUpRepository.getUserCount();
+      if (rows) {
+        return {
+          statusCode: 200,
+          message: "Success",
+          data: rows,
+          total: total,
+        };
+      }
       return {
-        statusCode: 200,
-        message: "All user data retrieved successfully",
-        data: rows,
-        total: total,
+        statusCode: 404,
+        message: "No users found",
+        errors: [{ field: "user", message: "No users found." }],
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "Failed to fetch users",
+        errors: [
+          { field: "user", message: "Unable to load users. Please refresh." },
+        ],
       };
     }
-    return { statusCode: 404, message: "No users found" };
   },
 };
+
 module.exports = SignUpService;

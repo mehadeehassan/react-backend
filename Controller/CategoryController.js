@@ -1,8 +1,6 @@
 const CategoryService = require("../Service/CategoryService");
 
-//add category controller
 const CategoryController = {
-  //add category
   addCategory: async (req, res) => {
     const isDataSaved = await CategoryService.addCategory(req);
     return res.status(isDataSaved.statusCode).json({
@@ -16,11 +14,9 @@ const CategoryController = {
     });
   },
 
-  //update category controller
   updateCategory: async (req, res) => {
     const isDataUpdated = await CategoryService.updateCategory(req);
     return res.status(isDataUpdated.statusCode).json({
-      // return response
       success: isDataUpdated.statusCode == 200 ? true : false,
       message: isDataUpdated.message,
       ...(isDataUpdated.errors && { errors: isDataUpdated.errors }),
@@ -30,7 +26,6 @@ const CategoryController = {
     });
   },
 
-  //delete category controller
   deleteCategory: async (req, res) => {
     const isDataDeleted = await CategoryService.deleteCategory(req);
     return res.status(isDataDeleted.statusCode).json({
@@ -44,12 +39,12 @@ const CategoryController = {
     });
   },
 
-  // get Category by Id
-  getCategoryById: async (req, res) => {
-    const isDataById = await CategoryService.getCategoryById(req);
+  getProductByCategoryId: async (req, res) => {
+    const isDataById = await CategoryService.getProductByCategoryId(req);
     return res.status(isDataById.statusCode).json({
       success: isDataById.statusCode == 200 ? true : false,
       message: isDataById.message,
+      data: isDataById.data,
       ...(isDataById.errors && { errors: isDataById.errors }),
       metadata: {
         timestamps: new Date(),
@@ -57,7 +52,6 @@ const CategoryController = {
     });
   },
 
-  //get all category controller
   getAllCategory: async (req, res) => {
     const isDataSaved = await CategoryService.getAllCategory(req);
     return res.status(isDataSaved.statusCode).json({

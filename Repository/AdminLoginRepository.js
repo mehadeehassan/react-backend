@@ -4,12 +4,12 @@ const AdminLoginRepository = {
   findAdminByEmail: async (email) => {
     try {
       const [rows] = await database.query(
-        `SELECT * FROM users WHERE email = '${email}'`
+        `SELECT * FROM users WHERE email = '${email}'`,
       );
       return rows[0];
     } catch (error) {
       console.log(error.message);
-      return null;
+      throw new Error(error.message);
     }
   },
 };

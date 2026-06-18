@@ -1,6 +1,5 @@
 const database = require("../Config/database");
 
-//add category repository
 const CategoryRepository = {
   createCategory: async (req) => {
     try {
@@ -9,10 +8,10 @@ const CategoryRepository = {
       );
     } catch (error) {
       console.log(error.message);
-      return [];
+      throw new Error(error.message);
     }
   },
-  //update category repository
+
   updateCategory: async (req) => {
     try {
       return await database.query(
@@ -20,10 +19,10 @@ const CategoryRepository = {
       );
     } catch (error) {
       console.log(error.message);
-      return [];
+      throw new Error(error.message);
     }
   },
-  //delete category repository
+
   deleteCategory: async (req) => {
     try {
       return await database.query(
@@ -31,21 +30,34 @@ const CategoryRepository = {
       );
     } catch (error) {
       console.log(error.message);
-      return [];
-    }
-  },
-  
-  //get Category By Id
-  getCategoryById: async (id) => {
-    try {
-      return await database.query(`SELECT * FROM category WHERE id = ${id}`);
-    } catch (error) {
-      console.log(error.message);
-      return [];
+      throw new Error(error.message);
     }
   },
 
-  //get all category repository
+  getProductByCategoryId: async (id) => {
+    try {
+      const [rows] = await database.query(`
+        SELECT 
+          c.id AS category_id, 
+          c.category_name,
+          p.id AS product_id, 
+          p.product_code, 
+          p.product_name,
+          p.product_price, 
+          p.status, 
+          p.description, 
+          p.image
+        FROM category c
+        LEFT JOIN products p ON c.id = p.category_id
+        WHERE c.id = ${id}
+      `);
+      return rows;
+    } catch (error) {
+      console.log(error.message);
+      throw new Error(error.message);
+    }
+  },
+
   getAllCategory: async () => {
     try {
       const [rows] = await database.query(
@@ -54,10 +66,10 @@ const CategoryRepository = {
       return rows;
     } catch (error) {
       console.log(error.message);
-      return [];
+      throw new Error(error.message);
     }
   },
-  //total category count
+
   getCategoryCount: async () => {
     try {
       const [rows] = await database.query(
@@ -65,7 +77,7 @@ const CategoryRepository = {
       );
       return rows[0].total;
     } catch (error) {
-      return 0;
+      throw new Error(error.message);
     }
   },
 };

@@ -36,7 +36,7 @@ routes.get("/getAllUserLimit", VerifyAdmin,signUpController.getAllUserLimit);
 routes.post("/addCategory", VerifyAdmin,validate(CategoryValidation()), CategoryController.addCategory);
 routes.put("/updateCategory/:id", VerifyAdmin,validate(CategoryValidation()), CategoryController.updateCategory);
 routes.delete("/deleteCategory/:id", VerifyAdmin,CategoryController.deleteCategory);
-routes.get("/getCategoryById/:id", VerifyAdmin,CategoryController.getCategoryById);
+routes.get("/getProductCategoryById/:id",CategoryController.getProductByCategoryId);
 routes.get("/getAllCategory",CategoryController.getAllCategory);
 
 // brand routes

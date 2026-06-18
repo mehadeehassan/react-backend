@@ -15,25 +15,19 @@ const AdminLoginService = {
       if (admin.password !== password) {
         return {
           statusCode: 401,
-          message: "Password does not match",
+          message: "Incorrect password. Please try again.",
         };
       }
       const token = jwt.sign(
         { id: admin.id, email: admin.email },
         process.env.JWT_SECRET,
-        { expiresIn: "1d" }
+        { expiresIn: "1d" },
       );
-
-      return {
-        statusCode: 200,
-        message: "Admin logged in successfully",
-        token: token,
-      };
-
+      return { statusCode: 200, message: "Logged in successfully", token };
     } catch (error) {
       return {
         statusCode: 500,
-        message: "Something went wrong",
+        message: "Something went wrong. Please try again.",
       };
     }
   },

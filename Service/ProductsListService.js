@@ -1,77 +1,119 @@
 const ProductsListRepository = require("../Repository/ProductsListRepository");
 
 const ProductsListService = {
-  //add product service
   addProduct: async (req) => {
-    const result = await ProductsListRepository.createProduct(req);
-    if (result?.error) {
+    try {
+      const result = await ProductsListRepository.createProduct(req);
+      if (result?.error) {
+        return {
+          statusCode: 400,
+          message: result.message,
+          errors: [{ field: "image", message: "Please select a valid image." }],
+        };
+      }
+      if (result[0]) {
+        return { statusCode: 200, message: "Product added successfully" };
+      }
       return {
-        statusCode: 400,
-        message: result.message,
-        errors: [{ field: "image", message: result.message }],
+        statusCode: 500,
+        message: "Product creation failed",
+        errors: [
+          {
+            field: "product",
+            message: "Failed to add product. Please try again.",
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "Product creation failed",
+        errors: [
+          {
+            field: "product",
+            message: "Something went wrong. Please try again.",
+          },
+        ],
       };
     }
-    if (result[0]) {
-      return { statusCode: 200, message: "Product added successfully" };
-    }
-    //product add failed
-    return {
-      statusCode: 500,
-      message: "Product creation failed",
-      errors: [
-        {
-          field: "product",
-          message: "Product creation failed",
-        },
-      ],
-    };
   },
 
-  //get all product service
   getAllProduct: async (req) => {
-    const page = req.query.page || 1;
-    const limit = req.query.limit || 10;
-    const data = await ProductsListRepository.getAllProduct(page, limit);
-    const total = await ProductsListRepository.getProductCount();
-    return { statusCode: 200, message: "Success", data, total };
+    try {
+      const page = req.query.page || 1;
+      const limit = req.query.limit || 10;
+      const data = await ProductsListRepository.getAllProduct(page, limit);
+      const total = await ProductsListRepository.getProductCount();
+      return { statusCode: 200, message: "Success", data, total };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "Failed to fetch products",
+        errors: [
+          {
+            field: "product",
+            message: "Unable to load products. Please refresh.",
+          },
+        ],
+      };
+    }
   },
 
-  //update product service
   updateProduct: async (req) => {
-    const isDataUpdated = await ProductsListRepository.updateProduct(req);
-    if (isDataUpdated[0]) {
-      return { statusCode: 200, message: "Product updated successfully" };
+    try {
+      const isDataUpdated = await ProductsListRepository.updateProduct(req);
+      if (isDataUpdated[0]) {
+        return { statusCode: 200, message: "Product updated successfully" };
+      }
+      return {
+        statusCode: 500,
+        message: "Product update failed",
+        errors: [
+          {
+            field: "product",
+            message: "Failed to update product. Please try again.",
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "Product update failed",
+        errors: [
+          {
+            field: "product",
+            message: "Something went wrong. Please try again.",
+          },
+        ],
+      };
     }
-    //product update failed
-    return {
-      statusCode: 500,
-      message: "Product update failed",
-      errors: [
-        {
-          field: "product",
-          message: "Product update failed",
-        },
-      ],
-    };
   },
 
-  //delete product service
   deleteProduct: async (req) => {
-    const isDataDeleted = await ProductsListRepository.deleteProduct(req);
-    if (isDataDeleted[0]) {
-      return { statusCode: 200, message: "Product deleted successfully" };
+    try {
+      const isDataDeleted = await ProductsListRepository.deleteProduct(req);
+      if (isDataDeleted[0]) {
+        return { statusCode: 200, message: "Product deleted successfully" };
+      }
+      return {
+        statusCode: 500,
+        message: "Product delete failed",
+        errors: [
+          {
+            field: "id",
+            message: "Failed to delete product. Please try again.",
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "Product delete failed",
+        errors: [
+          { field: "id", message: "Something went wrong. Please try again." },
+        ],
+      };
     }
-    //product delete failed
-    return {
-      statusCode: 500,
-      message: "Product delete failed",
-      errors: [
-        {
-          field: "id",
-          message: "Product delete failed",
-        },
-      ],
-    };
   },
 };
 

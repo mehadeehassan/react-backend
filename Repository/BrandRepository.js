@@ -1,6 +1,5 @@
 const database = require("../Config/database");
 
-//add brand repository
 const BrandRepository = {
   createBrand: async (req) => {
     try {
@@ -9,10 +8,10 @@ const BrandRepository = {
       );
     } catch (error) {
       console.log(error.message);
-      return [];
+      throw new Error(error.message);
     }
   },
-  //update brand repository
+
   updateBrand: async (req) => {
     try {
       return await database.query(
@@ -20,10 +19,10 @@ const BrandRepository = {
       );
     } catch (error) {
       console.log(error.message);
-      return [];
+      throw new Error(error.message);
     }
   },
-  //delete brand repository
+
   deleteBrand: async (req) => {
     try {
       return await database.query(
@@ -31,23 +30,22 @@ const BrandRepository = {
       );
     } catch (error) {
       console.log(error.message);
-      return [];
+      throw new Error(error.message);
     }
   },
 
-  //get all brand repository
   getAllBrand: async () => {
-  try {
-    const [rows] = await database.query(
-      `SELECT ROW_NUMBER() OVER (ORDER BY id) as serial, id, brand_name FROM brand`
-    );
-    return rows;
-  } catch (error) {
-    console.log(error.message);
-    return [];
-  }
-},
-  //total brand count
+    try {
+      const [rows] = await database.query(
+        `SELECT ROW_NUMBER() OVER (ORDER BY id) as serial, id, brand_name FROM brand`,
+      );
+      return rows;
+    } catch (error) {
+      console.log(error.message);
+      throw new Error(error.message);
+    }
+  },
+
   getBrandCount: async () => {
     try {
       const [rows] = await database.query(
@@ -55,7 +53,7 @@ const BrandRepository = {
       );
       return rows[0].total;
     } catch (error) {
-      return 0;
+      throw new Error(error.message);
     }
   },
 };

@@ -1,21 +1,28 @@
 const database = require("../Config/database");
 
 const SignUpRepository = {
-  //check user is exist
   checkUserIsExistByEmail: async (email) => {
-    const [rows] = await database.query(
-      `SELECT * FROM users WHERE email = '${email}'`,
-    );
-    return rows[0];
-  },
-  checkEmailForUpdate: async (email, id) => {
-    const [rows] = await database.query(
-      `SELECT * FROM users WHERE email = '${email}' AND id != ${parseInt(id)}`,
-    );
-    return rows[0];
+    try {
+      const [rows] = await database.query(
+        `SELECT * FROM users WHERE email = '${email}'`,
+      );
+      return rows[0];
+    } catch (error) {
+      throw new Error(error.message);
+    }
   },
 
-  //user registration
+  checkEmailForUpdate: async (email, id) => {
+    try {
+      const [rows] = await database.query(
+        `SELECT * FROM users WHERE email = '${email}' AND id != ${parseInt(id)}`,
+      );
+      return rows[0];
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+
   createSignUp: async (req) => {
     const status = req.body.status ?? 1;
     try {
@@ -24,42 +31,40 @@ const SignUpRepository = {
       );
     } catch (error) {
       console.log(error.message);
-      return [];
+      throw new Error(error.message);
     }
   },
+
   updateUser: async (req) => {
     try {
       const query = req.body.password
         ? `UPDATE users SET name = '${req.body.name}', email = '${req.body.email}', password = '${req.body.password}', status = ${req.body.status} WHERE id = ${req.params.id}`
         : `UPDATE users SET name = '${req.body.name}', email = '${req.body.email}', status = ${req.body.status} WHERE id = ${req.params.id}`;
-
       return await database.query(query);
     } catch (error) {
       console.log(error.message);
-      return [];
+      throw new Error(error.message);
     }
   },
 
-  //Delete user by id
   deleteUser: async (id) => {
-    //console.log(id);
     try {
       return await database.query(`DELETE FROM users WHERE id = ${id}`);
     } catch (error) {
       console.log(error.message);
-      return [];
+      throw new Error(error.message);
     }
   },
 
-  //get user by id
   getUserById: async (id) => {
     try {
       return await database.query(`SELECT * FROM users WHERE id = ${id}`);
     } catch (error) {
       console.log(error.message);
-      return [];
+      throw new Error(error.message);
     }
   },
+
   getAllUserLimit: async (page, limit) => {
     try {
       const offset = (page - 1) * limit;
@@ -68,11 +73,10 @@ const SignUpRepository = {
       );
     } catch (error) {
       console.log(error.message);
-      return [];
+      throw new Error(error.message);
     }
   },
 
- // Total user count 
   getUserCount: async () => {
     try {
       const [rows] = await database.query(
@@ -80,7 +84,7 @@ const SignUpRepository = {
       );
       return rows[0].total;
     } catch (error) {
-      return 0;
+      throw new Error(error.message);
     }
   },
 };

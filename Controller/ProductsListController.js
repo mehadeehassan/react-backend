@@ -2,7 +2,7 @@ const ProductsListService = require("../Service/ProductsListService");
 
 const ProductsListController = {
   addProduct: async (req, res) => {
-    console.log("Body:", req.body); 
+    console.log("Body:", req.body);
     const isDataSaved = await ProductsListService.addProduct(req);
     return res.status(isDataSaved.statusCode).json({
       success: isDataSaved.statusCode == 200 ? true : false,

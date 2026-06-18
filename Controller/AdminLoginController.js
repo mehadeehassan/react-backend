@@ -7,6 +7,9 @@ const AdminLoginController = {
       success: result.statusCode === 200 ? true : false,
       message: result.message,
       ...(result.token && { token: result.token }),
+      ...(result.statusCode !== 200 && {
+        errors: [{ field: "login", message: result.message }],
+      }),
       metadata: {
         timestamps: new Date(),
       },
