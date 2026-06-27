@@ -16,7 +16,12 @@ const port = process.env.PORT || 3000;
 //body parser section
 app.use(express.json());
 //cors section
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://ecommerce-alpha-sepia-61.vercel.app", "http://localhost:5173"],
+    credentials: true,
+  }),
+);
 //routes section
 // app.use('/Products', express.static('Public/Products'));
 // app.use('/Products', express.static(path.join(__dirname, 'Public/Products')));
