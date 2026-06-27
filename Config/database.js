@@ -1,9 +1,14 @@
 const { Sequelize } = require("sequelize");
 
-//Database connection
+// Database connection logic
 const database = process.env.DATABASE_URL
   ? new Sequelize(process.env.DATABASE_URL, {
       dialect: "mysql",
+      dialectOptions: {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      },
     })
   : new Sequelize(
       process.env.DB_NAME || "shops",
