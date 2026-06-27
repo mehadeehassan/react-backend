@@ -10,17 +10,9 @@ const database = require("./Config/database");
 //cors section
 const cors = require("cors");
 
-//database connection
-try {
-  database.authenticate();
-  console.log("Database connection successfully");
-} catch (error) {
-  console.log("Database connection failed");
-}
-
 //Application BootUp
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 //body parser section
 app.use(express.json());
 //cors section
@@ -30,6 +22,18 @@ app.use(cors());
 // app.use('/Products', express.static(path.join(__dirname, 'Public/Products')));
 app.use('/uploads', express.static(path.join(__dirname, 'Public/Products')));
 app.use(routes);
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+
+async function startServer() {
+  try {
+    await database.authenticate();
+    console.log("Database connection successfully");
+  } catch (error) {
+    console.error("Database connection failed:", error.message);
+  }
+
+  app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+  });
+}
+
+startServer();
