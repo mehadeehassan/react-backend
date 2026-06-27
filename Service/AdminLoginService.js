@@ -18,12 +18,35 @@ const AdminLoginService = {
           message: "Incorrect password. Please try again.",
         };
       }
+      if (admin.role !== "admin" && admin.role !== "manager") {
+        return {
+          statusCode: 403,
+          message: "You are not authorized to access the admin panel.",
+        };
+      }
       const token = jwt.sign(
         { id: admin.id, email: admin.email },
         process.env.JWT_SECRET,
         { expiresIn: "1d" },
       );
-      return { statusCode: 200, message: "Logged in successfully", token };
+      let permissions = [];
+      try {
+        permissions =
+          typeof admin.permissions === "string"
+            ? JSON.parse(admin.permissions)
+            : (admin.permissions ?? []);
+      } catch {
+        permissions = [];
+      }
+
+      return {
+        statusCode: 200,
+        message: "Logged in successfully",
+        token,
+        name: admin.name,
+        role: admin.role,
+        permissions,
+      };
     } catch (error) {
       return {
         statusCode: 500,

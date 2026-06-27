@@ -13,6 +13,30 @@ const signUpController = {
     });
   },
 
+  login: async (req, res) => {
+    const result = await SignUpService.login(req);
+    return res.status(result.statusCode).json({
+      success: result.statusCode === 200 ? true : false,
+      message: result.message,
+      ...(result.token && { token: result.token }),
+      ...(result.user && { user: result.user }),
+      ...(result.errors && { errors: result.errors }),
+      metadata: { timestamps: new Date() },
+    });
+  },
+
+  register: async (req, res) => {
+    const isDataSaved = await SignUpService.register(req);
+    return res.status(isDataSaved.statusCode).json({
+      success: isDataSaved.statusCode == 200 ? true : false,
+      message: isDataSaved.message,
+      ...(isDataSaved.errors && { errors: isDataSaved.errors }),
+      metadata: {
+        timestamps: new Date(),
+      },
+    });
+  },
+
   userUpdate: async (req, res) => {
     const isDataUpdated = await SignUpService.userUpdate(req);
     return res.status(isDataUpdated.statusCode).json({

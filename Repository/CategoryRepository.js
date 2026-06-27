@@ -1,3 +1,4 @@
+const { injectReplacements } = require("sequelize/lib/utils/sql");
 const database = require("../Config/database");
 
 const CategoryRepository = {
@@ -34,29 +35,36 @@ const CategoryRepository = {
     }
   },
 
-  getProductByCategoryId: async (id) => {
-    try {
-      const [rows] = await database.query(`
-        SELECT 
-          c.id AS category_id, 
-          c.category_name,
-          p.id AS product_id, 
-          p.product_code, 
-          p.product_name,
-          p.product_price, 
-          p.status, 
-          p.description, 
-          p.image
-        FROM category c
-        LEFT JOIN products p ON c.id = p.category_id
-        WHERE c.id = ${id}
-      `);
-      return rows;
-    } catch (error) {
-      console.log(error.message);
-      throw new Error(error.message);
-    }
-  },
+  getProductByCategoryId: async (idOrName) => {
+  try {
+    const isNumber = !isNaN(idOrName);
+
+    const [rows] = await database.query(
+      `
+      SELECT 
+        c.id AS category_id, 
+        c.category_name,
+        p.id AS product_id, 
+        p.product_code, 
+        p.product_name,
+        p.product_price, 
+        p.status, 
+        p.description, 
+        p.image,
+        b.brand_name
+      FROM category c
+      LEFT JOIN products p ON c.id = p.category_id
+      LEFT JOIN brand b ON p.brand_id = b.id
+      WHERE ${isNumber ? "c.id = :value" : "c.category_name = :value"}
+      `,
+      { replacements: { value: idOrName } },
+    );
+    return rows;
+  } catch (error) {
+    console.log(error.message);
+    throw new Error(error.message);
+  }
+},
 
   getAllCategory: async () => {
     try {

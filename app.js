@@ -27,7 +27,8 @@ app.use(express.json());
 app.use(cors());
 //routes section
 // app.use('/Products', express.static('Public/Products'));
-app.use('/Products', express.static(path.join(__dirname, 'Public/Products')));
+// app.use('/Products', express.static(path.join(__dirname, 'Public/Products')));
+app.use('/uploads', express.static(path.join(__dirname, 'Public/Products')));
 app.use(routes);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

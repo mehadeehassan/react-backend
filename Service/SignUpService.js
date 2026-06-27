@@ -1,4 +1,5 @@
 const SignUpRepository = require("../Repository/SignUpRepository");
+const jwt = require("jsonwebtoken");
 
 const SignUpService = {
   signUp: async (req) => {
@@ -33,6 +34,108 @@ const SignUpService = {
       return {
         statusCode: 500,
         message: "User registration failed",
+        errors: [
+          {
+            field: "email",
+            message: "Something went wrong. Please try again.",
+          },
+        ],
+      };
+    }
+  },
+
+  login: async (req) => {
+    try {
+      const { email, password } = req.body;
+      const user = await SignUpRepository.checkUserIsExistByEmail(email);
+
+      if (!user) {
+        return {
+          statusCode: 404,
+          message: "No account found with this email.",
+          errors: [
+            { field: "email", message: "No account found with this email." },
+          ],
+        };
+      }
+
+      if (user.password !== password) {
+        return {
+          statusCode: 401,
+          message: "Incorrect password.",
+          errors: [{ field: "password", message: "Incorrect password." }],
+        };
+      }
+
+      if (user.status === 0) {
+        return {
+          statusCode: 403,
+          message: "Your account has been deactivated.",
+          errors: [
+            { field: "email", message: "Your account has been deactivated." },
+          ],
+        };
+      }
+
+      const token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" },
+      );
+
+      return {
+        statusCode: 200,
+        message: "Logged in successfully",
+        token,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "Something went wrong. Please try again.",
+      };
+    }
+  },
+
+  register: async (req) => {
+    try {
+      const email = req.body.email;
+      const existingUser =
+        await SignUpRepository.checkUserIsExistByEmail(email);
+      if (existingUser) {
+        return {
+          statusCode: 400,
+          message: "Email already exists",
+          errors: [
+            { field: "email", message: "This email is already registered." },
+          ],
+        };
+      }
+
+      req.body.role = "user";
+      req.body.status = 1;
+      req.body.permissions = [];
+
+      const isDataSaved = await SignUpRepository.createSignUp(req);
+      if (isDataSaved[0]) {
+        return { statusCode: 200, message: "Registered successfully" };
+      }
+      return {
+        statusCode: 500,
+        message: "Registration failed",
+        errors: [
+          { field: "email", message: "Failed to register. Please try again." },
+        ],
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "Registration failed",
         errors: [
           {
             field: "email",
