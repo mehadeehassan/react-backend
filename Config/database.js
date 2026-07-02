@@ -1,11 +1,11 @@
 const { Sequelize } = require("sequelize");
 
-// Database connection logic
 const database = process.env.DATABASE_URL
   ? new Sequelize(process.env.DATABASE_URL, {
       dialect: "mysql",
       dialectOptions: {
         ssl: {
+          require: true,
           rejectUnauthorized: false,
         },
       },
@@ -18,6 +18,12 @@ const database = process.env.DATABASE_URL
         host: process.env.DB_HOST,
         port: Number(process.env.DB_PORT),
         dialect: "mysql",
+        dialectOptions: {
+          ssl: {
+            require: true,
+            rejectUnauthorized: false,
+          },
+        },
       }
     );
 
