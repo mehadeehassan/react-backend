@@ -18,7 +18,7 @@ app.use(express.json());
 //cors section
 app.use(
   cors({
-    origin: ["https://ecommerce-alpha-sepia-61.vercel.app", "http://localhost:5173"],
+    origin: ["https://ecommerce-omega-murex-59.vercel.app", "http://localhost:5173"],
     credentials: true,
   }),
 );
