@@ -40,6 +40,25 @@ const ProductsListController = {
       metadata: { timestamps: new Date() },
     });
   },
+  getDiscountedProductsByCategory: async (req, res) => {
+    const isDataDiscounted = await ProductsListService.getDiscountedProductsByCategory(req);
+    return res.status(isDataDiscounted.statusCode).json({
+      success: isDataDiscounted.statusCode == 200,
+      message: isDataDiscounted.message,
+      data: isDataDiscounted.data,
+      metadata: { timestamps: new Date() },
+    });
+  },
+
+  getAllDiscountedProducts: async (req, res) => {
+    const isDataAllDiscounted = await ProductsListService.getAllDiscountedProducts();
+    return res.status(isDataAllDiscounted.statusCode).json({
+      success: isDataAllDiscounted.statusCode == 200,
+      message: isDataAllDiscounted.message,
+      data: isDataAllDiscounted.data,
+      metadata: { timestamps: new Date() },
+    });
+  },
 };
 
 module.exports = ProductsListController;

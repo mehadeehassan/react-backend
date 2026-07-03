@@ -70,6 +70,55 @@ const ProductsListRepository = {
       throw new Error(error.message);
     }
   },
+  getDiscountedProductsByCategory: async (idOrName) => {
+    try {
+      const isNumber = !isNaN(idOrName);
+      const [rows] = await database.query(
+        `
+        SELECT 
+          c.id AS category_id, c.category_name,
+          p.id AS product_id, p.product_code, p.product_name,
+          p.product_price, p.discount_percentage,
+          ROUND(p.product_price - (p.product_price * p.discount_percentage / 100), 2) AS discounted_price,
+          p.status, p.description, p.image,
+          b.brand_name
+        FROM category c
+        LEFT JOIN products p ON c.id = p.category_id
+        LEFT JOIN brand b ON p.brand_id = b.id
+        WHERE ${isNumber ? "c.id = :value" : "c.category_name = :value"}
+          AND p.discount_percentage > 0
+          AND p.is_on_sale = TRUE
+        `,
+        { replacements: { value: idOrName } },
+      );
+      return rows;
+    } catch (error) {
+      console.log(error.message);
+      throw new Error(error.message);
+    }
+  },
+
+  getAllDiscountedProducts: async () => {
+    try {
+      const [rows] = await database.query(`
+        SELECT 
+          p.id AS product_id, p.product_code, p.product_name,
+          p.product_price, p.discount_percentage,
+          ROUND(p.product_price - (p.product_price * p.discount_percentage / 100), 2) AS discounted_price,
+          p.status, p.description, p.image,
+          b.brand_name, c.category_name
+        FROM products p
+        LEFT JOIN brand b ON p.brand_id = b.id
+        LEFT JOIN category c ON p.category_id = c.id
+        WHERE p.discount_percentage > 0 AND p.is_on_sale = TRUE
+        ORDER BY p.discount_percentage DESC
+      `);
+      return rows;
+    } catch (error) {
+      console.log(error.message);
+      throw new Error(error.message);
+    }
+  },
 };
 
 module.exports = ProductsListRepository;
