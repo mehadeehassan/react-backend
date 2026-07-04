@@ -16,9 +16,20 @@ const port = process.env.PORT || 3000;
 //body parser section
 app.use(express.json());
 //cors section
+// app.use(
+//   cors({
+//     origin: ["https://ecommerce-omega-murex-59.vercel.app", "http://localhost:5173"],
+//     credentials: true,
+//   }),
+// );
+
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",")
+  : [];
+
 app.use(
   cors({
-    origin: ["https://ecommerce-omega-murex-59.vercel.app", "http://localhost:5173"],
+    origin: allowedOrigins,
     credentials: true,
   }),
 );
