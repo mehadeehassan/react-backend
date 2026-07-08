@@ -1,4 +1,4 @@
-![React Shops Frontend](../React-backend/Public/download.png)
+![React Shops Frontend](React-backend/Public/download.png)
 # React Shops — Backend
 
 The backend API server for the React Shops e-commerce application, built with Node.js, Express, and MySQL (via Sequelize ORM).
