@@ -29,6 +29,11 @@ const VerifyAdmin = (req, res, next) => {
           .status(403)
           .json({ success: false, message: "Access denied. Admins only." });
       }
+      if (user.status === 0) {
+        return res
+          .status(403)
+          .json({ success: false, message: "Your account has been deactivated." });
+      }
 
       req.admin = user;
       next();

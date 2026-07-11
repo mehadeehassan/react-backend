@@ -24,6 +24,12 @@ const AdminLoginService = {
           message: "You are not authorized to access the admin panel.",
         };
       }
+      if (admin.status === 0) {
+        return {
+          statusCode: 403,
+          message: "Your account has been deactivated. Contact admin.",
+        };
+      }
       const token = jwt.sign(
         { id: admin.id, email: admin.email },
         process.env.JWT_SECRET,
