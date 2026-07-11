@@ -53,7 +53,7 @@ const CategoryRepository = {
         p.image,
         b.brand_name
       FROM category c
-      LEFT JOIN products p ON c.id = p.category_id
+      LEFT JOIN products p ON c.id = p.category_id AND p.status = 1
       LEFT JOIN brand b ON p.brand_id = b.id
       WHERE ${isNumber ? "c.id = :value" : "c.category_name = :value"}
       `,

@@ -16,9 +16,10 @@ const ProductsListRepository = {
       throw new Error(error.message);
     }
   },
-  getAllProduct: async (page, limit) => {
+  getAllProduct: async (page, limit, onlyActive) => {
     try {
       const offset = (page - 1) * limit;
+      const statusFilter = onlyActive ? "WHERE p.status = 1" : "";
       const [rows] = await database.query(`
       SELECT ROW_NUMBER() OVER (ORDER BY p.id) as serial,
         p.id, p.product_code, p.product_name, p.product_price, p.status, p.description, p.image,
@@ -27,6 +28,7 @@ const ProductsListRepository = {
       FROM products p
       LEFT JOIN category c ON p.category_id = c.id
       LEFT JOIN brand b ON p.brand_id = b.id
+      ${statusFilter}
       LIMIT ${limit} OFFSET ${offset}
     `);
       return rows;
@@ -88,6 +90,7 @@ const ProductsListRepository = {
         WHERE ${isNumber ? "c.id = :value" : "c.category_name = :value"}
           AND p.discount_percentage > 0
           AND p.is_on_sale = TRUE
+          AND p.status = 1
         `,
         { replacements: { value: idOrName } },
       );
@@ -110,7 +113,7 @@ const ProductsListRepository = {
         FROM products p
         LEFT JOIN brand b ON p.brand_id = b.id
         LEFT JOIN category c ON p.category_id = c.id
-        WHERE p.discount_percentage > 0 AND p.is_on_sale = TRUE
+        WHERE p.discount_percentage > 0 AND p.is_on_sale = TRUE AND p.status = 1
         ORDER BY p.discount_percentage DESC
       `);
       return rows;

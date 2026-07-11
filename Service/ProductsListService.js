@@ -42,7 +42,8 @@ const ProductsListService = {
     try {
       const page = req.query.page || 1;
       const limit = req.query.limit || 10;
-      const data = await ProductsListRepository.getAllProduct(page, limit);
+      const onlyActive = req.query.status === "active";
+      const data = await ProductsListRepository.getAllProduct(page, limit, onlyActive);
       const total = await ProductsListRepository.getProductCount();
       return { statusCode: 200, message: "Success", data, total };
     } catch (error) {
