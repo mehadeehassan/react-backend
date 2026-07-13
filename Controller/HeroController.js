@@ -14,7 +14,7 @@ const HeroController = {
   },
 
   getAllSlides: async (req, res) => {
-    const isDataGet = await HeroService.getAllSlides();
+    const isDataGet = await HeroService.getAllSlides(req);
     return res.status(isDataGet.statusCode).json({
       success: isDataGet.statusCode == 200,
       message: isDataGet.message,
