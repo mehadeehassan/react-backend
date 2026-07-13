@@ -1,11 +1,11 @@
-const multer = require('multer');
-const path = require('path');
+// const multer = require('multer');
+// const path = require('path');
 
-const storage = multer.diskStorage({
-  destination: 'Public/Products',
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  } 
-});
+// const storage = multer.diskStorage({
+//   destination: 'Public/Products',
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + path.extname(file.originalname));
+//   } 
+// });
 
-module.exports = multer({ storage });
+// module.exports = multer({ storage });
