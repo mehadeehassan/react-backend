@@ -3,7 +3,8 @@ const database = require("../Config/database");
 const ProductsListRepository = {
   createProduct: async (req) => {
     try {
-      const imagePath = req.file ? req.file.filename : null;
+      // const imagePath = req.file ? req.file.filename : null;
+      const imagePath = req.file ? req.file.path : null;
       if (!imagePath) {
         return { error: true, message: "Image is required" };
       }
@@ -51,7 +52,8 @@ const ProductsListRepository = {
 
   updateProduct: async (req) => {
     try {
-      const imagePath = req.file ? req.file.filename : null;
+      // const imagePath = req.file ? req.file.filename : null;
+      const imagePath = req.file ? req.file.path : null;
       const query = imagePath
         ? `UPDATE products SET product_code='${req.body.product_code}', product_name='${req.body.product_name}', product_price='${req.body.product_price}' ,category_id=${req.body.category_id}, brand_id=${req.body.brand_id}, status=${req.body.status}, description='${req.body.description}', image='${imagePath}', discount_percentage=${req.body.discount_percentage}, is_on_sale=${req.body.is_on_sale} WHERE id=${req.body.id}`
         : `UPDATE products SET product_code='${req.body.product_code}', product_name='${req.body.product_name}', product_price='${req.body.product_price}' ,category_id=${req.body.category_id}, brand_id=${req.body.brand_id}, status=${req.body.status}, description='${req.body.description}', discount_percentage=${req.body.discount_percentage}, is_on_sale=${req.body.is_on_sale} WHERE id=${req.body.id}`;

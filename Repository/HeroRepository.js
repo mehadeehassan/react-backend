@@ -3,7 +3,8 @@ const database = require("../Config/database");
 const HeroRepository = {
   createSlide: async (req) => {
     try {
-      const imagePath = req.file ? req.file.filename : null;
+      // const imagePath = req.file ? req.file.filename : null;
+      const imagePath = req.file ? req.file.path : null;
       if (!imagePath) {
         return { error: true, message: "Image is required" };
       }
@@ -76,7 +77,8 @@ const HeroRepository = {
 
   updateSlide: async (req) => {
     try {
-      const imagePath = req.file ? req.file.filename : null;
+      // const imagePath = req.file ? req.file.filename : null;
+      const imagePath = req.file ? req.file.path : null;
       const categoryId = req.body.category_id ? req.body.category_id : null;
       const replacements = {
         title: req.body.title,
