@@ -85,14 +85,17 @@ const BrandService = {
     }
   },
 
-  getAllBrand: async () => {
+  getAllBrand: async (req) => {
     try {
-      const data = await BrandRepository.getAllBrand();
+      const page = req.query.page || 1;
+      const limit = req.query.limit || 10;
+      const data = await BrandRepository.getAllBrand(page, limit);
+      const total = await BrandRepository.getBrandCount();
       return {
         statusCode: 200,
         message: "Success",
         data: data,
-        total: data.length,
+        total: total,
       };
     } catch (error) {
       return {

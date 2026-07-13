@@ -34,10 +34,12 @@ const BrandRepository = {
     }
   },
 
-  getAllBrand: async () => {
+  getAllBrand: async (page, limit) => {
     try {
+      const offset = (page - 1) * limit;
       const [rows] = await database.query(
-        `SELECT ROW_NUMBER() OVER (ORDER BY id) as serial, id, brand_name FROM brand`,
+        `SELECT ROW_NUMBER() OVER (ORDER BY id) as serial, id, brand_name FROM brand
+         LIMIT ${limit} OFFSET ${offset}`,
       );
       return rows;
     } catch (error) {

@@ -115,14 +115,17 @@ const CategoryService = {
     }
   },
 
-  getAllCategory: async () => {
+  getAllCategory: async (req) => {
     try {
-      const data = await CategoryRepository.getAllCategory();
+      const page = req.query.page || 1;
+      const limit = req.query.limit || 10;
+      const data = await CategoryRepository.getAllCategory( page, limit);
+      const total = await CategoryRepository.getCategoryCount();
       return {
         statusCode: 200,
         message: "Success",
         data: data,
-        total: data.length,
+        total: total,
       };
     } catch (error) {
       return {

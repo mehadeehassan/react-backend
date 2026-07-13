@@ -36,11 +36,11 @@ const CategoryRepository = {
   },
 
   getProductByCategoryId: async (idOrName) => {
-  try {
-    const isNumber = !isNaN(idOrName);
+    try {
+      const isNumber = !isNaN(idOrName);
 
-    const [rows] = await database.query(
-      `
+      const [rows] = await database.query(
+        `
       SELECT 
         c.id AS category_id, 
         c.category_name,
@@ -57,19 +57,21 @@ const CategoryRepository = {
       LEFT JOIN brand b ON p.brand_id = b.id
       WHERE ${isNumber ? "c.id = :value" : "c.category_name = :value"}
       `,
-      { replacements: { value: idOrName } },
-    );
-    return rows;
-  } catch (error) {
-    console.log(error.message);
-    throw new Error(error.message);
-  }
-},
+        { replacements: { value: idOrName } },
+      );
+      return rows;
+    } catch (error) {
+      console.log(error.message);
+      throw new Error(error.message);
+    }
+  },
 
-  getAllCategory: async () => {
+  getAllCategory: async (page, limit) => {
     try {
+      const offset = (page - 1) * limit;
       const [rows] = await database.query(
-        `SELECT ROW_NUMBER() OVER (ORDER BY id) as serial, id, category_name FROM category`,
+        `SELECT ROW_NUMBER() OVER (ORDER BY id) as serial, id, category_name FROM category
+        LIMIT ${limit} OFFSET ${offset}`,
       );
       return rows;
     } catch (error) {

@@ -6,6 +6,7 @@ const CategoryController = require("../Controller/CategoryController");
 const BrandController = require("../Controller/BrandController");
 const ProductsListController = require("../Controller/ProductsListController");
 const AdminLoginController = require("../Controller/AdminLoginController");
+const HeroController = require("../Controller/HeroController");
 
 //middleware section
 const VerifyAdmin = require("../Middleware/VerifyAdmin");
@@ -23,6 +24,7 @@ const ProductListValidation = require("../Validation/ProductsListValidation");
 const AdminLoginValidation = require("../Validation/AdminLoginValidation");
 const CategoryValidation = require("../Validation/CategoryValidation");
 const BrandValidation = require("../Validation/BrandValidation");
+const HeroValidation = require("../Validation/HeroValidation");
 
 
 // admin login routes
@@ -60,5 +62,12 @@ routes.get("/getAllProduct",ProductsListController.getAllProduct);
 
 routes.get("/getDiscountedProductsByCategory/:category", ProductsListController.getDiscountedProductsByCategory);
 routes.get("/getAllDiscountedProducts", ProductsListController.getAllDiscountedProducts);
+
+// Hero routes
+routes.post("/addHeroSlide", VerifyAdmin, VerifyPermission("add_hero"), upload.single("image"), validate(HeroValidation()), HeroController.addSlide);
+routes.put("/updateHeroSlide", VerifyAdmin, VerifyPermission("update_hero"), upload.single("image"), validate(HeroValidation()), HeroController.updateSlide);
+routes.delete("/deleteHeroSlide/:id", VerifyAdmin, VerifyPermission("delete_hero"), HeroController.deleteSlide);
+routes.get("/getAllHeroSlides", VerifyAdmin, HeroController.getAllSlides);
+routes.get("/getActiveHeroSlides", HeroController.getActiveSlides);
 
 module.exports = routes;
