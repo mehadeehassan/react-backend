@@ -14,7 +14,8 @@ const VerifyOnlyAdmin = require("../Middleware/VerifyOnlyAdmin");
 const VerifyPermission = require("../Middleware/VerifyPermission");
 
 //config section
-const  upload  = require("../Config/cloudinary");
+// const  upload  = require("../Config/cloudinary");
+const upload = require("../Config/multer");
 //common section
 const validate = require("../Common/Validate");
 
