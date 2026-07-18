@@ -153,6 +153,21 @@ const ProductsListService = {
       };
     }
   },
+
+  getAllNewArrivalProducts: async () => {
+    try {
+      const data = await ProductsListRepository.getAllNewArrivalProducts();
+      return { statusCode: 200, message: "Success", data };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "Failed to fetch new arrival products",
+        errors: [
+          { field: "product", message: "Unable to load products. Please refresh." },
+        ],
+      };
+    }
+  },
 };
 
 module.exports = ProductsListService;

@@ -58,6 +58,16 @@ const ProductsListController = {
       metadata: { timestamps: new Date() },
     });
   },
+
+  getAllNewArrivalProducts: async (req, res) => {
+    const isDataNewArrival = await ProductsListService.getAllNewArrivalProducts();
+    return res.status(isDataNewArrival.statusCode).json({
+      success: isDataNewArrival.statusCode == 200,
+      message: isDataNewArrival.message,
+      data: isDataNewArrival.data,
+      metadata: { timestamps: new Date() },
+    });
+  },
 };
 
 module.exports = ProductsListController;
