@@ -9,9 +9,12 @@ const HeroRepository = {
         return { error: true, message: "Image is required" };
       }
       const categoryId = req.body.category_id ? req.body.category_id : null;
+      const linkType = req.body.link_type || "all_discount";
+      const customLink = linkType === "custom" ? req.body.custom_link : null;
+
       return await database.query(
-        `INSERT INTO hero_slides (title, description, image, button_text, category_id, sort_order, status)
-         VALUES (:title, :description, :image, :button_text, :category_id, :sort_order, :status)`,
+        `INSERT INTO hero_slides (title, description, image, button_text, category_id, link_type, custom_link, sort_order, status)
+         VALUES (:title, :description, :image, :button_text, :category_id, :link_type, :custom_link, :sort_order, :status)`,
         {
           replacements: {
             title: req.body.title,
@@ -19,6 +22,8 @@ const HeroRepository = {
             image: imagePath,
             button_text: req.body.button_text,
             category_id: categoryId,
+            link_type: linkType,
+            custom_link: customLink,
             sort_order: req.body.sort_order || 0,
             status: req.body.status || "active",
           },
@@ -80,18 +85,23 @@ const HeroRepository = {
       // const imagePath = req.file ? req.file.filename : null;
       const imagePath = req.file ? req.file.path : null;
       const categoryId = req.body.category_id ? req.body.category_id : null;
+      const linkType = req.body.link_type || "all_discount";
+      const customLink = linkType === "custom" ? req.body.custom_link : null;
+
       const replacements = {
         title: req.body.title,
         description: req.body.description,
         button_text: req.body.button_text,
         category_id: categoryId,
+        link_type: linkType,
+        custom_link: customLink,
         sort_order: req.body.sort_order || 0,
         status: req.body.status,
         id: req.body.id,
       };
       const query = imagePath
-        ? `UPDATE hero_slides SET title=:title, description=:description, image=:image, button_text=:button_text, category_id=:category_id, sort_order=:sort_order, status=:status WHERE id=:id`
-        : `UPDATE hero_slides SET title=:title, description=:description, button_text=:button_text, category_id=:category_id, sort_order=:sort_order, status=:status WHERE id=:id`;
+        ? `UPDATE hero_slides SET title=:title, description=:description, image=:image, button_text=:button_text, category_id=:category_id, link_type=:link_type, custom_link=:custom_link, sort_order=:sort_order, status=:status WHERE id=:id`
+        : `UPDATE hero_slides SET title=:title, description=:description, button_text=:button_text, category_id=:category_id, link_type=:link_type, custom_link=:custom_link, sort_order=:sort_order, status=:status WHERE id=:id`;
       if (imagePath) replacements.image = imagePath;
       return await database.query(query, { replacements });
     } catch (error) {

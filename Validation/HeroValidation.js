@@ -12,6 +12,14 @@ const HeroValidation = () => {
       .optional()
       .isIn(["active", "inactive"])
       .withMessage("Status must be active or inactive"),
+    body("link_type")
+      .optional()
+      .isIn(["category_discount", "all_discount", "new_arrival", "custom"])
+      .withMessage("Invalid link type"),
+    body("custom_link")
+      .if(body("link_type").equals("custom"))
+      .notEmpty()
+      .withMessage("Custom link is required when link type is 'custom'"),
   ];
 };
 
