@@ -132,9 +132,11 @@ const ProductsListRepository = {
     }
   },
 
-  getAllNewArrivalProducts: async () => {
+  getNewArrivalProductsByCategory: async (idOrName) => {
     try {
-      const [rows] = await database.query(`
+      const isNumber = !isNaN(idOrName);
+      const [rows] = await database.query(
+        `
         SELECT 
           p.id AS product_id, p.product_code, p.product_name,
           p.product_price, p.discount_percentage,
@@ -142,11 +144,15 @@ const ProductsListRepository = {
           p.status, p.description, p.image,
           b.brand_name, c.category_name
         FROM products p
-        LEFT JOIN brand b ON p.brand_id = b.id
         LEFT JOIN category c ON p.category_id = c.id
-        WHERE p.is_new_arrival = 1 AND p.status = 1
+        LEFT JOIN brand b ON p.brand_id = b.id
+        WHERE ${isNumber ? "c.id = :value" : "c.category_name = :value"}
+          AND p.is_new_arrival = 1
+          AND p.status = 1
         ORDER BY p.id DESC
-      `);
+        `,
+        { replacements: { value: idOrName } },
+      );
       return rows;
     } catch (error) {
       console.log(error.message);

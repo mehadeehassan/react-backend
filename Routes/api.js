@@ -63,7 +63,7 @@ routes.get("/getAllProduct",ProductsListController.getAllProduct);
 
 routes.get("/getDiscountedProductsByCategory/:category", ProductsListController.getDiscountedProductsByCategory);
 routes.get("/getAllDiscountedProducts", ProductsListController.getAllDiscountedProducts);
-routes.get("/getAllNewArrivalProducts", ProductsListController.getAllNewArrivalProducts);
+routes.get("/getNewArrivalProductsByCategory/:category", ProductsListController.getNewArrivalProductsByCategory);
 
 // Hero routes
 routes.post("/addHeroSlide", VerifyAdmin, VerifyPermission("add_hero"), upload.single("image"), validate(HeroValidation()), HeroController.addSlide);

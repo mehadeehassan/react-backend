@@ -59,12 +59,12 @@ const ProductsListController = {
     });
   },
 
-  getAllNewArrivalProducts: async (req, res) => {
-    const isDataNewArrival = await ProductsListService.getAllNewArrivalProducts();
-    return res.status(isDataNewArrival.statusCode).json({
-      success: isDataNewArrival.statusCode == 200,
-      message: isDataNewArrival.message,
-      data: isDataNewArrival.data,
+  getNewArrivalProductsByCategory: async (req, res) => {
+    const isDataNewArrivalCat = await ProductsListService.getNewArrivalProductsByCategory(req);
+    return res.status(isDataNewArrivalCat.statusCode).json({
+      success: isDataNewArrivalCat.statusCode == 200,
+      message: isDataNewArrivalCat.message,
+      data: isDataNewArrivalCat.data,
       metadata: { timestamps: new Date() },
     });
   },

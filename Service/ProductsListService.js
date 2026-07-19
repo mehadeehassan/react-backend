@@ -154,9 +154,10 @@ const ProductsListService = {
     }
   },
 
-  getAllNewArrivalProducts: async () => {
+  getNewArrivalProductsByCategory: async (req) => {
     try {
-      const data = await ProductsListRepository.getAllNewArrivalProducts();
+      const { category } = req.params;
+      const data = await ProductsListRepository.getNewArrivalProductsByCategory(category);
       return { statusCode: 200, message: "Success", data };
     } catch (error) {
       return {
