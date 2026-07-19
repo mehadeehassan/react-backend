@@ -61,9 +61,14 @@ routes.put("/updateProduct", VerifyAdmin, VerifyPermission("update_product"), up
 routes.delete("/deleteProduct/:id", VerifyAdmin, VerifyPermission("delete_product"), ProductsListController.deleteProduct);
 routes.get("/getAllProduct",ProductsListController.getAllProduct);
 
+// routes.get("/getDiscountedProductsByCategory/:category", ProductsListController.getDiscountedProductsByCategory);
+// routes.get("/getAllDiscountedProducts", ProductsListController.getAllDiscountedProducts);
+// routes.get("/getNewArrivalProductsByCategory/:category", ProductsListController.getNewArrivalProductsByCategory);
+
 routes.get("/getDiscountedProductsByCategory/:category", ProductsListController.getDiscountedProductsByCategory);
 routes.get("/getAllDiscountedProducts", ProductsListController.getAllDiscountedProducts);
 routes.get("/getNewArrivalProductsByCategory/:category", ProductsListController.getNewArrivalProductsByCategory);
+routes.get("/getAllNewArrivalProducts", ProductsListController.getAllNewArrivalProducts);
 
 // Hero routes
 routes.post("/addHeroSlide", VerifyAdmin, VerifyPermission("add_hero"), upload.single("image"), validate(HeroValidation()), HeroController.addSlide);

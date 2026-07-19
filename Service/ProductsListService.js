@@ -117,6 +117,59 @@ const ProductsListService = {
     }
   },
 
+  // getDiscountedProductsByCategory: async (req) => {
+  //   try {
+  //     const { category } = req.params;
+  //     const data = await ProductsListRepository.getDiscountedProductsByCategory(category);
+  //     return { statusCode: 200, message: "Success", data };
+  //   } catch (error) {
+  //     return {
+  //       statusCode: 500,
+  //       message: "Failed to fetch discounted products",
+  //       errors: [
+  //         {
+  //           field: "product",
+  //           message: "Unable to load products. Please refresh.",
+  //         },
+  //       ],
+  //     };
+  //   }
+  // },
+
+  // getAllDiscountedProducts: async () => {
+  //   try {
+  //     const data = await ProductsListRepository.getAllDiscountedProducts();
+  //     return { statusCode: 200, message: "Success", data };
+  //   } catch (error) {
+  //     return {
+  //       statusCode: 500,
+  //       message: "Failed to fetch discounted products",
+  //       errors: [
+  //         {
+  //           field: "product",
+  //           message: "Unable to load products. Please refresh.",
+  //         },
+  //       ],
+  //     };
+  //   }
+  // },
+
+  // getNewArrivalProductsByCategory: async (req) => {
+  //   try {
+  //     const { category } = req.params;
+  //     const data = await ProductsListRepository.getNewArrivalProductsByCategory(category);
+  //     return { statusCode: 200, message: "Success", data };
+  //   } catch (error) {
+  //     return {
+  //       statusCode: 500,
+  //       message: "Failed to fetch new arrival products",
+  //       errors: [
+  //         { field: "product", message: "Unable to load products. Please refresh." },
+  //       ],
+  //     };
+  //   }
+  // },
+
   getDiscountedProductsByCategory: async (req) => {
     try {
       const { category } = req.params;
@@ -127,10 +180,7 @@ const ProductsListService = {
         statusCode: 500,
         message: "Failed to fetch discounted products",
         errors: [
-          {
-            field: "product",
-            message: "Unable to load products. Please refresh.",
-          },
+          { field: "product", message: "Unable to load products. Please refresh." },
         ],
       };
     }
@@ -145,10 +195,7 @@ const ProductsListService = {
         statusCode: 500,
         message: "Failed to fetch discounted products",
         errors: [
-          {
-            field: "product",
-            message: "Unable to load products. Please refresh.",
-          },
+          { field: "product", message: "Unable to load products. Please refresh." },
         ],
       };
     }
@@ -158,6 +205,21 @@ const ProductsListService = {
     try {
       const { category } = req.params;
       const data = await ProductsListRepository.getNewArrivalProductsByCategory(category);
+      return { statusCode: 200, message: "Success", data };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        message: "Failed to fetch new arrival products",
+        errors: [
+          { field: "product", message: "Unable to load products. Please refresh." },
+        ],
+      };
+    }
+  },
+
+  getAllNewArrivalProducts: async () => {
+    try {
+      const data = await ProductsListRepository.getAllNewArrivalProducts();
       return { statusCode: 200, message: "Success", data };
     } catch (error) {
       return {

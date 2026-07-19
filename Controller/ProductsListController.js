@@ -39,6 +39,36 @@ const ProductsListController = {
       metadata: { timestamps: new Date() },
     });
   },
+  // getDiscountedProductsByCategory: async (req, res) => {
+  //   const isDataDiscounted = await ProductsListService.getDiscountedProductsByCategory(req);
+  //   return res.status(isDataDiscounted.statusCode).json({
+  //     success: isDataDiscounted.statusCode == 200,
+  //     message: isDataDiscounted.message,
+  //     data: isDataDiscounted.data,
+  //     metadata: { timestamps: new Date() },
+  //   });
+  // },
+
+  // getAllDiscountedProducts: async (req, res) => {
+  //   const isDataAllDiscounted = await ProductsListService.getAllDiscountedProducts();
+  //   return res.status(isDataAllDiscounted.statusCode).json({
+  //     success: isDataAllDiscounted.statusCode == 200,
+  //     message: isDataAllDiscounted.message,
+  //     data: isDataAllDiscounted.data,
+  //     metadata: { timestamps: new Date() },
+  //   });
+  // },
+
+  // getNewArrivalProductsByCategory: async (req, res) => {
+  //   const isDataNewArrivalCat = await ProductsListService.getNewArrivalProductsByCategory(req);
+  //   return res.status(isDataNewArrivalCat.statusCode).json({
+  //     success: isDataNewArrivalCat.statusCode == 200,
+  //     message: isDataNewArrivalCat.message,
+  //     data: isDataNewArrivalCat.data,
+  //     metadata: { timestamps: new Date() },
+  //   });
+  // },
+
   getDiscountedProductsByCategory: async (req, res) => {
     const isDataDiscounted = await ProductsListService.getDiscountedProductsByCategory(req);
     return res.status(isDataDiscounted.statusCode).json({
@@ -65,6 +95,16 @@ const ProductsListController = {
       success: isDataNewArrivalCat.statusCode == 200,
       message: isDataNewArrivalCat.message,
       data: isDataNewArrivalCat.data,
+      metadata: { timestamps: new Date() },
+    });
+  },
+
+  getAllNewArrivalProducts: async (req, res) => {
+    const isDataNewArrival = await ProductsListService.getAllNewArrivalProducts();
+    return res.status(isDataNewArrival.statusCode).json({
+      success: isDataNewArrival.statusCode == 200,
+      message: isDataNewArrival.message,
+      data: isDataNewArrival.data,
       metadata: { timestamps: new Date() },
     });
   },
