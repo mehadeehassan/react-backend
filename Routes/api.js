@@ -60,10 +60,7 @@ routes.post("/addProduct", VerifyAdmin, VerifyPermission("add_product"), upload.
 routes.put("/updateProduct", VerifyAdmin, VerifyPermission("update_product"), upload.single("image"), validate(ProductListValidation()), ProductsListController.updateProduct);
 routes.delete("/deleteProduct/:id", VerifyAdmin, VerifyPermission("delete_product"), ProductsListController.deleteProduct);
 routes.get("/getAllProduct",ProductsListController.getAllProduct);
-
-// routes.get("/getDiscountedProductsByCategory/:category", ProductsListController.getDiscountedProductsByCategory);
-// routes.get("/getAllDiscountedProducts", ProductsListController.getAllDiscountedProducts);
-// routes.get("/getNewArrivalProductsByCategory/:category", ProductsListController.getNewArrivalProductsByCategory);
+routes.get("/getAllBestSellingProducts", ProductsListController.getAllBestSellingProducts);
 
 routes.get("/getDiscountedProductsByCategory/:category", ProductsListController.getDiscountedProductsByCategory);
 routes.get("/getAllDiscountedProducts", ProductsListController.getAllDiscountedProducts);
